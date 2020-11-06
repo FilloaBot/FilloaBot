@@ -1,12 +1,11 @@
-import json
-import asyncio
+import random, time, json, asyncio
 import discord
-import random, time
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-from config.variables import *
 
-#load the bot toke from the json file
+from config.variables import urls, emojis
+
+#Cargar el token del archivo json
 with open("token.json") as file:
     data = json.load(file)
 token = data['token']
@@ -18,6 +17,7 @@ intents.messages = True
 intents.emojis = True
 bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
 
+#Comandos
 @bot.command(
     name = "filloas",
     description = "Mustra fotos de filloas",
@@ -35,8 +35,12 @@ async def filloas(ctx):
     pass_context = True
 )
 async def aleatorio(ctx, num1: int, num2: int):
-    number = random.randint(num1, num2)
-    await ctx.send(number)
+    try:
+        number = random.randint(num1, num2)
+        await ctx.send(number)
+    except Exception:
+        await ctx.send("Tienes que dar un intervalo valido")
+        return
 
 @bot.command(
     name = "twitch",
@@ -47,8 +51,7 @@ async def aleatorio(ctx, num1: int, num2: int):
 async def twitch(ctx):
     await ctx.send("Visita mi canal de twitch: " + urls[3])
 
-
-
+#Eventos
 @bot.event
 async def on_ready():
     game = discord.Game("Usa ? para invocar al filloa bot")
@@ -63,6 +66,7 @@ async def on_ready():
 async def on_message(message):
     if message.content.endswith("5"):        
         await message.channel.send("Por el culo te la inco")
+        await message.add_reaction(emojis[1])
         await bot.process_commands(message)
 
 bot.run(token)
