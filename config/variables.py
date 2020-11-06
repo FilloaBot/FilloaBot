@@ -4,8 +4,3 @@ urls = [
     "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.ytimg.com%2Fvi%2FS8gy1acgvWE%2Fmaxresdefault.jpg&f=1&nofb=1",
     "https://twitch.tv/b4n3_34_42"
     ]
-
-emojis = [
-    "\U0001f642", #Cara sonriente
-    "\N{FLUSHED FACE}", #Cara sonrojada
-]

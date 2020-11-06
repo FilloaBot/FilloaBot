@@ -1,9 +1,10 @@
 import random, time, json, asyncio
 import discord
+import re
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 
-from config.variables import urls, emojis
+from config.variables import *
 
 #Cargar el token del archivo json
 with open("token.json") as file:
@@ -64,9 +65,12 @@ async def on_ready():
 
 @bot.listen()
 async def on_message(message):
-    if message.content.endswith("5"):        
-        await message.channel.send("Por el culo te la inco")
-        await message.add_reaction(emojis[1])
-        await bot.process_commands(message)
+    references = json.load(open('config/references.json'))["references"]
+    for reference in references:
+        if re.search(reference["regex"], message.content) != None:
+            await message.channel.send(reference["answer"])
+            for reaction in reference["reactions"]:
+                await message.add_reaction(reaction)
+            await bot.process_commands(message)
 
 bot.run(token)
