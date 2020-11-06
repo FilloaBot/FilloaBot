@@ -18,11 +18,6 @@ intents.messages = True
 intents.emojis = True
 bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
 
-@tasks.loop(seconds=25)
-async def comprobar_pechi():
-    channel = await bot.get_channel(channel.user.id) 
-    await channel.send("A pechi le gusta oliveira")
-
 @bot.command(
     name = "filloas",
     description = "Mustra fotos de filloas",
