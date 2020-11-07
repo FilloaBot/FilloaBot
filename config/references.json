@@ -1,6 +1,5 @@
-{"references": [{"regex": "cepill|CEPILL",
-"answer": "https://cdn.imgpaste.net/2020/11/07/II9iw.png",
-"reactions": ["🪥"]}, 
+{"references": [{"regex": "cepill|CEPILL", "answer": "https://cdn.imgpaste.net/2020/11/07/II9iw.png", "reactions": ["🪥"]},
+{"regex": "boton|BOTON", "answer": "Ten cuidado con las palabras dudo que quieras botones en tu casa, así vas a invocar a BOTONEITOR.", "reactions": [""]},
 {"regex": "1$|uno$", "answer": "Por el culo te vacuno", "reactions": ["😎"]}, 
 {"regex": "2$|dos$", "answer": "Te la meto como un dios", "reactions": ["😎"]}, 
 {"regex": "5$|cinco$", "answer": "Por el culo te la inco", "reactions": ["😎"]}]} 
