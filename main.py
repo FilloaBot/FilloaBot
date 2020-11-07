@@ -65,6 +65,8 @@ async def on_ready():
 
 @bot.listen()
 async def on_message(message):
+    if message.author == bot.user:
+        return
     references = json.load(open('config/references.json'))["references"]
     for reference in references:
         if re.search(reference["regex"], message.content) != None:
