@@ -1,7 +1,10 @@
-# FilloaBot
-Este bot es algo simple, tiene un poco de todo. Este bot en realidad es un meme, lo puedes descargar pero seguramente no entiendas que tenemos montado aqui
+#FilloaBot
+Este es un bot de proposito general.
 
-#Instalacion
-Primero hay que instalar python en su version 3.9
-Despues descargamos la libreria de discord.py
+##Instalacion
+Lo primero es descargar la version de python 3.9, puedes hacerlo [aquí](http://www.python.org/downloads/ "aquí")
 
+Despues necesitamos instalar la libreria de python llamada "discord.py", para hacerlo
+ejecutamos el comando en la terminal `pip install discord.py`
+
+Ya tendriamos los comoponentes necesarios para usar el bot. Nota: necesitareis un token para usar el bot y lo tendreis que meter en un archivo que llameis token.json 
