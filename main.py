@@ -44,15 +44,9 @@ async def on_ready():
 async def on_message(message):
     if message.author == bot.user:
         return
-<<<<<<< HEAD
     references = json.load(open("config/references.json"))["references"]
     for reference in references:
         if references.search(reference["regex"], message.content) != None:
-=======
-    references = json.load(open('config/references.json'))["references"]
-    for reference in references:
-        if re.search(reference["regex"], message.content) != None:
->>>>>>> 85ba6845f12e7c2ceb4f5e38d1e3d59c66bfdfa3
             await message.channel.send(reference["answer"])
             for reaction in reference["reactions"]:
                 await message.add_reaction(reaction)
