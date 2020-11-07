@@ -1,4 +1,7 @@
 # FilloaBot
-A simple bot writed in python 3.9 for general purpouse.
-This is not a serious project, I only want to do a discord bot to have fun and learn.
+Este bot es algo simple, tiene un poco de todo. Este bot en realidad es un meme, lo puedes descargar pero seguramente no entiendas que tenemos montado aqui
+
+#Instalacion
+Primero hay que instalar python en su version 3.9
+Despues descargamos la libreria de discord.py
 
