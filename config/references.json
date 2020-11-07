@@ -1,5 +1,6 @@
-{"references": [{"regex": "5$",
-"answer": "Por el culo te la inco",
-"reactions": ["😎"]}, {"regex": "cepill|CEPILL",
+{"references": [{"regex": "cepill|CEPILL",
 "answer": "https://cdn.imgpaste.net/2020/11/07/II9iw.png",
-"reactions": ["🪥"]}]} 
+"reactions": ["🪥"]}, 
+{"regex": "1$|uno$", "answer": "Por el culo te vacuno", "reactions": ["😎"]}, 
+{"regex": "2$|dos$", "answer": "Te la meto como un dios", "reactions": ["😎"]}, 
+{"regex": "5$|cinco$", "answer": "Por el culo te la inco", "reactions": ["😎"]}]} 
