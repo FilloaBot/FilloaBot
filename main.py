@@ -6,6 +6,7 @@ from itertools import cycle
 
 from config.variables import *
 from cogs.greeting import *
+from cogs.filloas import *
 
 #Cargar el token del archivo json
 with open("token.json") as file:
@@ -22,6 +23,7 @@ bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propos
 status = cycle(status)
 
 bot.add_cog(Greeting(bot))
+bot.add_cog(Filloas(bot))
 
 #Comandos
 @bot.command(
