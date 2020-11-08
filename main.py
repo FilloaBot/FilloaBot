@@ -1,6 +1,5 @@
-import random, time, json, asyncio
+import random, time, json, asyncio, requests
 import discord
-import re
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from itertools import cycle
@@ -32,10 +31,11 @@ async def filloas(ctx):
     number = random.randint(0, 3)
     await ctx.send(urls[number])
 
-@tasks.loop(seconds = 60)
+#Tasks
+@tasks.loop(seconds = 3600)
 async def change_status():
     await bot.change_presence(activity = discord.Game(next(status)))
-    print("LOG: status changed")
+    #print("LOG: status changed")
 
 #Eventos
 @bot.event
