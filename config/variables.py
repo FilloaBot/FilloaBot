@@ -6,8 +6,11 @@ urls = [
     ]
 
 status = [
-    "Usa ? para ejecutar un comando",
-    "En realidad alguien lee esto?",
-    "A quien no le gustan las filloas?",
-    "Ella no te quiere :("
+    "usa ? para ejecutar un comando",
+    "en realidad alguien lee esto?",
+    "a quien no le gustan las filloas?",
+    "ella no te quiere :(",
+    "Albion online es un mmo rpg...",
+    "quieres ser tu propio jefe?",
+    "saludos amigo, juegomos a League of Legends"
 ]
