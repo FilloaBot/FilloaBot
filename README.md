@@ -1,7 +1,7 @@
-#FilloaBot
+# FilloaBot
 Este es un bot de proposito general.
 
-##Instalacion
+## Instalacion
 Lo primero es descargar la version de python 3.9, puedes hacerlo [aquí](http://www.python.org/downloads/ "aquí")
 
 Despues necesitamos instalar la libreria de python llamada "discord.py", para hacerlo
