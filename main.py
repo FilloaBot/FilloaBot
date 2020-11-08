@@ -1,10 +1,11 @@
-import random, time, json, asyncio, requests
+import random, time, json, asyncio, requests, regex
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
 from itertools import cycle
 
 from config.variables import *
+from cogs.greeting import *
 
 #Cargar el token del archivo json
 with open("token.json") as file:
@@ -19,6 +20,8 @@ intents.emojis = True
 bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
 
 status = cycle(status)
+
+bot.add_cog(Greeting(bot))
 
 #Comandos
 @bot.command(
