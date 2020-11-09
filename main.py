@@ -1,4 +1,4 @@
-import random, time, json, asyncio, requests, regex
+import random, time, json, asyncio
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
@@ -37,21 +37,22 @@ async def filloas(ctx):
     await ctx.send(urls[number])
 
 #Tasks
-@tasks.loop(seconds = 3600)
+@tasks.loop(seconds = 10)
 async def change_status():
     await bot.change_presence(activity = discord.Game(next(status)))
-    #print("LOG: status changed")
+    print("LOG: status changed")
 
 #Eventos
 @bot.event
 async def on_ready():
+
     change_status.start()
     print("Filloa bot encendio")
     print("\nLogged in as")
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    
+
 """
 @bot.listen()
 async def on_message(message):

@@ -18,5 +18,5 @@ class Greeting(commands.Cog):
         if self._last_member is None or self._last_member.id != member.id:
             await ctx.send("Hola {0.name}".format(member))
         else:
-            await ctx.send("Hola {0.name}... pareces familiar".format(member))
+            await ctx.send("Hola de nuevo {0.name}".format(member))
         self._last_member = member
