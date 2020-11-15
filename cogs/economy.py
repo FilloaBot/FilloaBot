@@ -9,3 +9,14 @@ class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(
+        pass_context = True
+    )
+    async def farm(self, ctx):
+        await ctx.send("Has farmeado esta cantidad de dinero")
+
+    @commands.command(
+        pass_context = True
+    )
+    async def banco(self, ctx):
+        pass
