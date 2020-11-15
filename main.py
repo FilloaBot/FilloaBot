@@ -1,7 +1,5 @@
-import random, time, json, asyncio
+import json
 import discord
-from discord.ext import commands, tasks
-from discord.ext.commands import Bot
 
 from cogs.filloas import Filloas
 from cogs.admin_tools import *
@@ -22,21 +20,5 @@ bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propos
 bot.add_cog(Filloas(bot))
 bot.add_cog(Admin_tools(bot))
 bot.add_cog(Events(bot))
-
-
-
-"""
-@bot.listen()
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    references = json.load(open("config/references.json"))["references"]
-    for reference in references:
-        if references.search(reference["regex"], message.content) != None:
-            await message.channel.send(reference["answer"])
-            for reaction in reference["reactions"]:
-                await message.add_reaction(reaction)
-            await bot.process_commands(message)
-"""
 
 bot.run(token)
