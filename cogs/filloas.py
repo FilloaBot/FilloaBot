@@ -2,9 +2,12 @@ import random
 import discord
 from discord.ext import commands
 
+from config.variables import urls
+
 class Filloas(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self._last_member = None
 
     @commands.command(
         pass_context = True
@@ -17,16 +20,21 @@ class Filloas(commands.Cog):
             await ctx.send("Inserta un intervalo valido fetido")
             return
 
-    #Only for testing purpouses, this wont be a real command
-    @commands.command(name = "crear-canal")
-    @commands.has_permissions(administrator = True)
-    async def create_channel(self, ctx, channel_name):
-        try:
-            guild = ctx.guild
-            existing_channel = discord.utils.get(guild.channels, name = channel_name)
-            if not existing_channel:
-                print(f"Creando nuevo canal: {channel_name}")
-                await guild.create_text_channel(channel_name)
-        except Exception:
-            await ctx.send("No has usado el comando de forma correcta o no tienes permisos")
-            return
+    @commands.command()
+    async def hello(self, ctx, *, member: discord.member = None):
+        member = member or ctx.author
+        if self._last_member is None or self._last_member.id != member.id:
+            await ctx.send("Hola {0.name}".format(member))
+        else:
+            await ctx.send("Hola de nuevo {0.name}".format(member))
+        self._last_member = member
+
+    @commands.command(
+        name = "filloas",
+        description = "Mustra fotos de filloas",
+        brief = "Muestra fotos de filloas aleatorioas, por lo demas, no sirve para nada",
+        pass_context = True
+    )
+    async def filloas(self, ctx):
+        number = random.randint(0, 3)
+        await ctx.send(urls[number])
