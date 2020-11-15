@@ -2,11 +2,10 @@ import random, time, json, asyncio
 import discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot
-from itertools import cycle
 
-from config.variables import *
-from cogs.greeting import *
-from cogs.filloas import *
+from cogs.filloas import Filloas
+from cogs.admin_tools import *
+from cogs.events import Events
 
 #Cargar el token del archivo json
 with open("token.json") as file:
@@ -20,38 +19,11 @@ intents.messages = True
 intents.emojis = True
 bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
 
-status = cycle(status)
-
-bot.add_cog(Greeting(bot))
 bot.add_cog(Filloas(bot))
+bot.add_cog(Admin_tools(bot))
+bot.add_cog(Events(bot))
 
-#Comandos
-@bot.command(
-    name = "filloas",
-    description = "Mustra fotos de filloas",
-    brief = "Muestra fotos de filloas aleatorioas, por lo demas, no sirve para nada",
-    pass_context = True
-)
-async def filloas(ctx):
-    number = random.randint(0, 3)
-    await ctx.send(urls[number])
 
-#Tasks
-@tasks.loop(seconds = 10)
-async def change_status():
-    await bot.change_presence(activity = discord.Game(next(status)))
-    print("LOG: status changed")
-
-#Eventos
-@bot.event
-async def on_ready():
-
-    change_status.start()
-    print("Filloa bot encendio")
-    print("\nLogged in as")
-    print(bot.user.name)
-    print(bot.user.id)
-    print('------')
 
 """
 @bot.listen()
