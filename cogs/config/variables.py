@@ -12,5 +12,6 @@ status = [
     "ella no te quiere :(",
     "Albion online es un mmo rpg...",
     "quieres ser tu propio jefe?",
-    "saludos amigo, juegomos a League of Legends"
+    "saludos amigo, juguemos a League of Legends",
+    "al teto"
 ]
