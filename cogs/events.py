@@ -44,7 +44,7 @@ class Events(commands.Cog):
             return
         references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
-            if re.search(reference["regex"], message.content) != None:
+            if re.search(reference["regex"], message.content.lower()) != None:
                 await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
