@@ -9,6 +9,10 @@ class Admin_tools(commands.Cog):
     @commands.command(name = "crear-canal")
     @commands.has_permissions(administrator = True)
     async def create_channel(self, ctx, channel_name):
+        msg = ctx.message
+        emoji = "👍"
+        await msg.add_reaction(emoji)
+
         guild = ctx.guild
         existing_channel = discord.utils.get(guild.channels, name = channel_name)
         if not existing_channel:
