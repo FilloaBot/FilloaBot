@@ -1,5 +1,5 @@
 import json
-import regex
+import re
 from itertools import cycle
 import discord
 from discord.ext import commands, tasks
@@ -44,7 +44,7 @@ class Events(commands.Cog):
             return
         references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
-            if references.search(reference["regex"], message.content) != None:
+            if re.search(reference["regex"], message.content) != None:
                 await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
