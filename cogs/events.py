@@ -1,3 +1,5 @@
+import json
+import regex
 from itertools import cycle
 import discord
 from discord.ext import commands, tasks
@@ -35,18 +37,15 @@ class Events(commands.Cog):
         await member.add_roles(role)
         print(f"{member} has been given {role}")
 
-    """
+
     @commands.Cog.listener()
-    async def on_message(message):
-        if message.author == bot.user:
+    async def on_message(self, message):
+        if message.author == self.bot.user:
             return
-        references = json.load(open("config/references.json"))["references"]
+        references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
             if references.search(reference["regex"], message.content) != None:
                 await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
-                await bot.process_commands(message)
-    """
-
-        
+                await self.bot.process_commands(message)   
