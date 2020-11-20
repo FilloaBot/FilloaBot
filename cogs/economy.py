@@ -1,4 +1,5 @@
 import sqlite3
+import random
 import discord
 from discord.ext import commands
 
@@ -14,7 +15,8 @@ class Economy(commands.Cog):
         pass_context = True
     )
     async def farm(self, ctx):
-        await ctx.send("Has farmeado esta cantidad de dinero")
+        money = random.randint(200, 600)
+        await ctx.send(f"Has farmeado esta cantidad de dinero `{money}`")
 
     @commands.command(
         pass_context = True
