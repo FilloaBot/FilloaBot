@@ -1,9 +1,11 @@
 import json
-import discord
 
 from cogs.filloas import Filloas
 from cogs.admin_tools import *
 from cogs.events import Events
+from cogs.voice import Voice
+
+import discord
 
 #Cargar el token del archivo json
 with open("token.json") as file:
@@ -20,5 +22,6 @@ bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propos
 bot.add_cog(Filloas(bot))
 bot.add_cog(Admin_tools(bot))
 bot.add_cog(Events(bot))
+bot.add_cog(Voice(bot))
 
 bot.run(token)
