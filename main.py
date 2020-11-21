@@ -1,4 +1,5 @@
 import json
+import logging
 
 from cogs.filloas import Filloas
 from cogs.admin_tools import Admin_tools
@@ -13,6 +14,13 @@ from discord.ext import commands
 with open("token.json") as file:
     data = json.load(file)
 token = data['token']
+
+#Activar el logging
+logger = logging.getLogger("discord")
+logger.setlevel(logging.DEBUG)
+handler = logging.FileHandler(filename = "discord.log", encoding = "UTF-8", mode = 'w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logging.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.members = True
