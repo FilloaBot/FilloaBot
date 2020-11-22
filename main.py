@@ -17,10 +17,10 @@ token = data['token']
 
 #Activar el logging
 logger = logging.getLogger("discord")
-logger.setlevel(logging.DEBUG)
+logger.setLevel(logging.DEBUG)
 handler = logging.FileHandler(filename = "discord.log", encoding = "UTF-8", mode = 'w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
-logging.addHandler(handler)
+logger.addHandler(handler)
 
 intents = discord.Intents.default()
 intents.members = True

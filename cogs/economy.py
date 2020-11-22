@@ -1,7 +1,8 @@
-import sqlite3
 import random
 import discord
 from discord.ext import commands
+
+
 
 class Economy(commands.Cog):
     """
@@ -21,5 +22,14 @@ class Economy(commands.Cog):
     @commands.command(
         pass_context = True
     )
-    async def banco(self, ctx):
+    async def banco(self, ctx, operation):
         pass
+
+    @commands.command()
+    async def balance(self, ctx):
+        pass
+
+    @commands.command()
+    async def steal(self, ctx, user):
+        pass
+    
