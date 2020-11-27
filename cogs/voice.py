@@ -6,13 +6,13 @@ from discord import FFmpegPCMAudio
 class Voice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
-    """
-    Until we can download the discord.py[voice], this wont work
-    """
+    
     @commands.command()
-    async def join(self, ctx):
+    async def play(self, ctx):
         global voice
+        if ctx.message.author.voice == None:
+            await ctx.send("No estas en un canal de voz melon.")
+            return 
         channel = ctx.message.author.voice.channel
         voice = get(self.bot.voice_clients, guild = ctx.guild)
         
@@ -21,6 +21,6 @@ class Voice(commands.Cog):
         else:
             voice = await channel.connect()
 
-        # await ctx.guild.change_voice_state()
-        player = FFmpegPCMAudio("Bag Raiders - Shooting Stars.mp3")
+        await ctx.guild.change_voice_state(channel=channel, self_deaf=True)
+        player = FFmpegPCMAudio("fuentedepoder.mp3")
         voice.play(player)
