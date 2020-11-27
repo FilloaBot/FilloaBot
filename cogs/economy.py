@@ -3,10 +3,9 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-
 from cogs.utils.database import *
 
-database = main_db("..\database.db")
+database = main_db("./database.db")
 
 class Economy(commands.Cog):
     def __init__(self, bot):
