@@ -8,7 +8,7 @@ class Voice(commands.Cog):
         self.bot = bot
     
     @commands.command()
-    async def play(self, ctx):
+    async def join(self, ctx):
         global voice
         if ctx.message.author.voice == None:
             await ctx.send("No estas en un canal de voz melon.")
@@ -24,3 +24,14 @@ class Voice(commands.Cog):
         await ctx.guild.change_voice_state(channel=channel, self_deaf=True)
         player = FFmpegPCMAudio("fuentedepoder.mp3")
         voice.play(player)
+
+    @commands.command()
+    async def leave(self, ctx):
+        channel = ctx.message.voice.channel
+        voice = get(self.bot.voice_clients, guild = ctx.guild)
+
+        if voice and voice.is_connected():
+            await voice.disconnect()
+            await ctx.send(f"Desconectado del canal {channel}")
+        else:
+            await ctx.send("No estoy conectado a ningun canal fetido")
