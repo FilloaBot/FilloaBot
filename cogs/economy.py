@@ -15,7 +15,7 @@ class Economy(commands.Cog):
         pass_context = True
     )
     async def farm(self, ctx):
-        user = ctx.author
+        user = str(ctx.author)
 
         money = random.randint(200, 600)
         database.add_user_balance(user, money)
