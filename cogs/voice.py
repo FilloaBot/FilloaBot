@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from discord.utils import get
+from discord import FFmpegPCMAudio
 
 class Voice(commands.Cog):
     def __init__(self, bot):
@@ -20,9 +21,5 @@ class Voice(commands.Cog):
         else:
             voice = await channel.connect()
 
-        await voice.disconnect()
-
-        if voice and voice.is_connected():
-            await voice.move_to(channel)
-        else:
-            voice = await channel.connect()
+        player = FFmpegPCMAudio("Bag Raiders - Shooting Stars.mp3")
+        voice.play(player)
