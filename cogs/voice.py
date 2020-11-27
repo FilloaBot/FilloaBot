@@ -21,5 +21,6 @@ class Voice(commands.Cog):
         else:
             voice = await channel.connect()
 
+        # await ctx.guild.change_voice_state()
         player = FFmpegPCMAudio("Bag Raiders - Shooting Stars.mp3")
         voice.play(player)
