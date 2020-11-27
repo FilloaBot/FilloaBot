@@ -20,21 +20,20 @@ class main_db():
         s = (user_name,)
         cursorObj.execute("SELECT amount FROM balance WHERE user = ?", s)
 
-        if not cursorObj.fetchall():
+        out = cursorObj.fetchall()
+
+        if not out:
             print("El usuario no existe melon")
-            
-            con.commit()
             return None
 
-        con.commit()
-        return cursorObj.fetchall()  
+        return out[0][0]  
 
     def add_user_balance(self, user_name, balance = 0):
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
         s = (user_name, balance,)
         
-        if self.user_exist(user_name):
+        if not self.user_exist(user_name):
             cursorObj.execute("INSERT INTO balance VALUES(?, ?)", s)
         
         else:
