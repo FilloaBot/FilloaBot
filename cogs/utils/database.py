@@ -13,7 +13,7 @@ class main_db():
 
         con.commit()
         return not (len(cursorObj.fetchall()) == 0)
-    
+
     def get_user_balance(self, user_name):
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
@@ -26,16 +26,21 @@ class main_db():
             print("El usuario no existe melon")
             return None
 
-        return out[0][0]  
+        return out[0][0]
 
     def add_user_balance(self, user_name, balance = 0):
+        current_balance = self.get_user_balance(user_name)
+        if current_balance == None:
+            current_balance = 0
+        balance = current_balance + balance
+
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
         s = (user_name, balance,)
-        
+
         if not self.user_exist(user_name):
             cursorObj.execute("INSERT INTO balance VALUES(?, ?)", s)
-        
+
         else:
             s = (balance, user_name,)
             cursorObj.execute("UPDATE balance SET amount = ? WHERE user = ?", s)

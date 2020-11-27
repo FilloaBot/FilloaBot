@@ -2,7 +2,7 @@ import random
 import discord
 from discord.ext import commands
 
-from cogs.config.variables import urls, cofitin
+from cogs.config.variables import urls
 
 class Filloas(commands.Cog):
     def __init__(self, bot):
