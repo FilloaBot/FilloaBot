@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 
 from cogs.filloas import Filloas
 from cogs.admin_tools import Admin_tools
@@ -32,7 +33,12 @@ bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propos
 bot.add_cog(Filloas(bot))
 bot.add_cog(Admin_tools(bot))
 bot.add_cog(Events(bot))
-bot.add_cog(Voice(bot))
 bot.add_cog(Economy(bot))
+
+if sys.argv[1:] == "no_voice":
+    pass
+else:
+        bot.add_cog(Voice(bot))
+
 
 bot.run(token)
