@@ -1,7 +1,9 @@
 import random
+from typing import Optional
+
 import discord
 from discord.ext import commands
-from discord.utils import get
+from discord import Embed, Member
 
 from cogs.utils.database import *
 
@@ -22,17 +24,24 @@ class Economy(commands.Cog):
         
         await ctx.send(f"Has farmeado esta cantidad de dinero `{money}`")
 
-    @commands.command(
-        pass_context = True
-    )
-    async def banco(self, ctx, operation):
-        pass
+    @commands.command()
+    async def balance(self, ctx, user: Optional[Member]):
+        target = user or ctx.author
+        embed = Embed(
+            tittle = "Tu balance economico actual",
+            colour = target.colour
+        )
+        
+        user = str(user) or str(ctx.author)
+        if not database.user_exist(user):
+            await ctx.send("El usuario no existe")
+        money = str(database.get_user_balance(user))
+
+        embed.set_footer(text = f"Tu dinero actual es: {money}")
+
+        await ctx.send(embed = embed)
 
     @commands.command()
-    async def balance(self, ctx):
-        pass
-
-    @commands.command()
-    async def steal(self, ctx, user):
+    async def steal(self, ctx):
         pass
     
