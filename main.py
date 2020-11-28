@@ -34,11 +34,9 @@ bot.add_cog(Filloas(bot))
 bot.add_cog(Admin_tools(bot))
 bot.add_cog(Events(bot))
 bot.add_cog(Economy(bot))
-
 if sys.argv[1:] == "no_voice":
     pass
 else:
-        bot.add_cog(Voice(bot))
-
+    bot.add_cog(Voice(bot))
 
 bot.run(token)
