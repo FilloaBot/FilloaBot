@@ -42,6 +42,11 @@ class Voice(commands.Cog):
         if ctx.author.voice == None:
             await ctx.send("No estas en un canal de voz melon")
             return
+        
+        msgSplit = ctx.message.content.split(" ")
+        if len(msgSplit) > 2:
+            msgSplit.pop(0)
+            url = " ".join(msgSplit)
 
         channel = ctx.message.author.voice.channel
         voice = get(self.bot.voice_clients, guild = ctx.guild)
