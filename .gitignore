@@ -145,3 +145,6 @@ config/
 
 #For avoiding token.json
 token.json
+
+#For avoiding the downloads
+*.mp3
