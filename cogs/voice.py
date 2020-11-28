@@ -1,5 +1,6 @@
 import youtube_dl 
 import os
+import shutil
 
 import discord
 from discord.ext import commands
@@ -88,6 +89,10 @@ class Voice(commands.Cog):
         
     @commands.command()
     async def pause(self, ctx):
+        emoji = '⏸️'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+
         voice = get(self.bot.voice_clients, guild = ctx.guild)
 
         if voice and voice.is_playing():
@@ -98,6 +103,10 @@ class Voice(commands.Cog):
             
     @commands.command()
     async def resume(self, ctx):
+        emoji = '▶️'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+
         voice = get(self.bot.voice_clients, guild = ctx.guild)
 
         if voice and voice.is_paused():
@@ -108,6 +117,10 @@ class Voice(commands.Cog):
 
     @commands.command()
     async def stop(self, ctx):
+        emoji = '🛑'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+
         voice = get(self.bot.voice_clients, guild = ctx.guild)
 
         if voice and voice.is_playing():
@@ -115,3 +128,7 @@ class Voice(commands.Cog):
             await ctx.send("Parando de reproducir")
         else:
             await ctx.send("La reproduccion ya esta parada melon")
+
+    @commands.command()
+    async def next(self, ctx):
+        pass
