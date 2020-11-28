@@ -61,6 +61,7 @@ class Voice(commands.Cog):
             os.remove(filePath)
 
         ydl_opts = {
+            'default_search': 'auto',
             'outtmpl': filePath,
             'format': 'bestaudio/best',
             'postprocessors': [{
