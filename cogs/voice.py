@@ -35,3 +35,17 @@ class Voice(commands.Cog):
             await ctx.send(f"Desconectado del canal {channel}")
         else:
             await ctx.send("No estoy conectado a ningun canal fetido")
+
+    @commands.command()
+    async def play(self, ctx, url: str):
+        if ctx.author.voice == None:
+            await ctx.send("No estas en un canal de voz melon")
+            return
+
+        channel = ctx.message.author.voice.channel
+        voice = get(self.bot.voice_clients, guild = ctx)
+        
+        if voice and voice.is_connected():
+            await voice.move_to(channel)
+        else:
+            voice = await voice.connect()
