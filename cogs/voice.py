@@ -7,6 +7,8 @@ from discord.ext import commands
 from discord.utils import get
 from discord import FFmpegPCMAudio
 
+queues = {}
+
 class Voice(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -56,7 +58,7 @@ class Voice(commands.Cog):
             await voice.move_to(channel)
         else:
             voice = await channel.connect()
-
+        
         await ctx.guild.change_voice_state(channel = channel, self_deaf = True)
 
         await ctx.send("Comenzando descarga...")
@@ -130,5 +132,36 @@ class Voice(commands.Cog):
             await ctx.send("La reproduccion ya esta parada melon")
 
     @commands.command()
-    async def next(self, ctx):
-        pass
+    async def queue(self, ctx, url: str):
+        Queue_infile = os.path.isdir("./Queue")
+
+        if Queue_infile is False:
+            os.mkdir("Queue")
+
+        DIR = os.path.abspath(os.path.realpath("Queue"))
+        q_num = len(os.listdir(DIR))
+        q_num += 1
+        add_queue = True
+        while add_queue:
+            if q_num in queues:
+                q_num += 1
+            else:
+                add_queue = False
+                queues[q_num] = q_num
+        
+        queue_path = os.path.abspath(os.path.realpath("Queue"))
+
+        ydl_opts = {
+            'default_search': 'auto',
+            'format': 'bestaudio/best',
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }]
+        }
+
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ydl.download([url])
+
+        await ctx.send(f"Añadiendo la cancion {str(q_num)} a la cola")
