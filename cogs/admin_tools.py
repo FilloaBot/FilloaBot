@@ -29,10 +29,11 @@ class Admin_tools(commands.Cog):
 
     @commands.command(pass_context = True)
     async def user_info(self, ctx, target: Optional[Member]):
-        target = target or ctx.author
+        target = target or ctx.message.author
 
         embed = Embed(
-            tittle = "Informacion del usuario",
+            title = "Informacion del usuario",
+            description = f"Puedes ver como de gay es {target.mention} con `?gay`",
             colour = target.colour,
             timestamp = datetime.utcnow()
         )

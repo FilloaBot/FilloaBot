@@ -43,7 +43,8 @@ class Filloas(commands.Cog):
         await ctx.send(urls[number])
 
     @commands.command()
-    async def gay(self, ctx, user):
+    async def gay(self, ctx, user: Optional[Member]):
+        user = user.mention or ctx.message.author.mention
         num = random.randint(0, 100)
 
         await ctx.send(f"El usuario {user} es {num}% homosexual")

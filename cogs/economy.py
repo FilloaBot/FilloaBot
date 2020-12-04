@@ -1,6 +1,6 @@
 import random
 from typing import Optional
-from colour import Color
+from discord import Color
 
 import discord
 from discord.ext import commands
@@ -27,8 +27,10 @@ class Economy(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx, user: Optional[Member]):
+        user = user or ctx.message.author
+        user = str(user)
         embed = Embed(
-            tittle = "Tu balance economico actual",
+            title = "Balance económico",
             colour = Color(0xFFFFFF)
         )
 
@@ -36,9 +38,9 @@ class Economy(commands.Cog):
             await ctx.send("El usuario no existe")
             return 
             
-        money = str(database.get_user_balance(str(user)))
+        money = str(database.get_user_balance(user))
 
-        embed.set_footer(text = f"Tu dinero actual es: {money}")
+        embed.add_field(name = "_**Cartera**_", value = f"Tu dinero actual en la cartera es: **{money}**")
 
         await ctx.send(embed = embed)
 
