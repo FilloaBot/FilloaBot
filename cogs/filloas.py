@@ -1,6 +1,9 @@
 import random
+from typing import Optional
+
 import discord
 from discord.ext import commands
+from discord import Embed, Member
 
 from cogs.config.variables import urls
 
@@ -44,3 +47,8 @@ class Filloas(commands.Cog):
         num = random.randint(0, 100)
 
         await ctx.send(f"El usuario {user} es {num}% homosexual")
+
+    @commands.command()
+    async def ping(self, ctx):
+        latency = self.bot.latency
+        await ctx.send(f"La latencia del bot es: {latency}")
