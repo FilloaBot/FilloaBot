@@ -306,6 +306,18 @@ class Voice(commands.Cog):
 
         if not voice == None and voice.is_paused():
                 voice.resume()
+    
+    @commands.command()
+    async def pause(self, ctx):
+        emoji = '⏸️'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+
+        voice = get(self.bot.voice_clients, guild = ctx.guild)
+
+        if not voice == None and voice.is_playing():
+                voice.pause()
+
     @commands.command()
     async def stop(self, ctx):
         emoji = '🛑'
