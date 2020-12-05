@@ -155,7 +155,7 @@ class Voice(commands.Cog):
             current = ""
             if i == currentPos:
                 current = "_[Reproduciendo]_"
-            embed.add_field(name = f"**{str(i)} {current}**", value = f"[{video_title}]({video_url})")
+            embed.add_field(name = f"**{str(i + 1)} {current}**", value = f"[{video_title}]({video_url})")
             
             i +=1
         await ctx.send(embed = embed)
