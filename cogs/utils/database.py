@@ -192,7 +192,6 @@ class main_db():
             if currentPos < 0:
                 currentPos = len(queue["queue"]) -1
         self.modify_queue(guildId, currentPos=currentPos)
-        print(currentPos)
         return currentPos
 
     

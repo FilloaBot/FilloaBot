@@ -44,7 +44,7 @@ class Voice(commands.Cog):
             await ctx.send("No estoy conectado a ningun canal fetido")
 
     @commands.command()
-    async def play(self, ctx, url: str, noQueue=False):
+    async def play(self, ctx, url: str, noQueue="f"):
         if not noQueue == True:
             noQueue = False
         if ctx.author.voice == None:
@@ -116,6 +116,53 @@ class Voice(commands.Cog):
             )
             await ctx.send(embed = embed)
         
+    @commands.command()
+    async def queue(self, ctx):
+        ydl_opts = {
+            'default_search': 'auto'
+        }
+
+        videos = []
+        queue = database.get_queue(ctx.guild.id)
+        if queue == None:
+            embed = Embed(
+                title = "**Cola vacía**",
+                colour = Color(0x3A425D),
+            )
+            await ctx.send(embed=embed)
+        for ytId in queue["queue"]:
+            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                info_dict = ydl.extract_info(ytId, download=False)
+                video_id = info_dict.get("id", None)
+                video_url = "https://youtube.com/watch?v=" + video_id
+                video_title = info_dict.get('title', None)
+            dict = {
+                "name": video_title,
+                "url": video_url
+            }
+            videos.append(dict)
+
+        embed = Embed(
+            title = f"Cola de reproducción",
+            colour = Color(0x3A425D)
+        )
+
+        currentPos = database.get_queue(ctx.guild.id)["currentPos"]
+        i=0
+        for video in videos:
+            video_title = video["name"]
+            video_url = video["url"]
+            current = ""
+            if i == currentPos:
+                current = "_[Reproduciendo]_"
+            embed.add_field(name = f"**{str(i)} {current}**", value = f"[{video_title}]({video_url})")
+            
+            i +=1
+        await ctx.send(embed = embed)
+            
+
+
+
     @commands.command()
     async def next(self, ctx):
         emoji = '⏭️'
