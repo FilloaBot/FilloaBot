@@ -106,12 +106,13 @@ class main_db():
         if out[3] == 0:
             loopPos = None
         else:
+            loopPos = out[3]
             loopPos -= 1
         data = {
             "guildId": out[0],
             "queue": out[1].split(";;;"),
             "loop": bool(out[2]),
-            "loopPos": out[3],
+            "loopPos": loopPos,
             "shuffle": bool(out[4]),
             "currentPos": out[5] or 0
         }
@@ -138,9 +139,11 @@ class main_db():
                 shuffle = self.get_queue(guildId)["shuffle"]
         if loopPos == None:
             if self.get_queue(guildId) == None:
-                loopPos = None
+                loopPos = 0
             else:
                 loopPos = self.get_queue(guildId)["loopPos"]
+                if loopPos == None:
+                    loopPos=0
         if currentPos == None:
             if self.get_queue(guildId) == None:
                 currentPos = 0

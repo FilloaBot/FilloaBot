@@ -71,14 +71,31 @@ class Voice(commands.Cog):
         }
 
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            info_dict = ydl.extract_info(url, download=False)
+            try:
+                info_dict = ydl.extract_info(url, download=False)
+            except (youtube_dl.utils.DownloadError):
+                embed = Embed(
+                    title = "**No se han encotrado resultados**",
+                    description = f"No hay resultados para **{url}**",
+                    colour = Color(0xFF0000),
+                    ) 
+                await ctx.send(embed = embed)
+                return
             try:
                 info_dict = info_dict["entries"][0]
-            except Exception as e:
+            except (KeyError, IndexError):
                 pass
             video_id = info_dict.get("id", None)
             video_url = "https://youtube.com/watch?v=" + video_id
             video_title = info_dict.get('title', None)
+            if video_title == None:
+                embed = Embed(
+                    title = "**No se han encotrado resultados**",
+                    description = f"No hay resultados para **{url}**",
+                    colour = Color(0xFF0000),
+                    ) 
+                await ctx.send(embed = embed)
+                return
         if not noQueue:
             database.insert_into_queue(ctx.guild.id, video_id)
         url = video_id
