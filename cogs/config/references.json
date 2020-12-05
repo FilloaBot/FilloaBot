@@ -1,5 +1,7 @@
 {"references": [{"regex": "cepill", "answer": "https://cdn.imgpaste.net/2020/11/07/II9iw.png", "reactions": ["🪥"]},
 {"regex": "boton", "answer": "Ten cuidado, así vas a invocar a BOTONEITOR. Dudo que quieras botones en tu casa.", "reactions": []},
+{"regex": "filmora", "answer": "https://cdn.imgpaste.net/2020/12/06/OR1sm.png", "reactions": ["🤬"]},
+{"regex": "onfire|loko", "answer": "https://cdn.imgpaste.net/2020/12/06/OR3DS.png", "reactions": ["⚰"]},
 {"regex": "0$|cero$", "answer": "Te reviento el agujero", "reactions": ["😎"]}, 
 {"regex": "1$|uno$", "answer": "Por el culo te vacuno", "reactions": ["😎"]}, 
 {"regex": "2$|dos$", "answer": "Te la meto como un dios", "reactions": ["😎"]}, 
