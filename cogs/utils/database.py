@@ -23,7 +23,7 @@ class main_db():
         out = cursorObj.fetchall()
 
         if not out:
-            print("El usuario no existe melon")
+            # print("El usuario no existe melon")
             return None
 
         return out[0][0]
@@ -33,12 +33,13 @@ class main_db():
         if current_balance == None:
             current_balance = 0
         balance = current_balance + balance
-
+        if balance < 0:
+            return None
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
-        s = (user_name, balance,)
 
         if not self.user_exist(user_name):
+            s = (user_name, balance,)
             cursorObj.execute("INSERT INTO balance VALUES(?, ?)", s)
 
         else:
@@ -46,15 +47,18 @@ class main_db():
             cursorObj.execute("UPDATE balance SET amount = ? WHERE user = ?", s)
 
         con.commit()
+        return balance
 
     def substract_balance(self, user_name, balance = 0):
         current_balance = self.get_user_balance(user_name)
         if current_balance == None:
-            print(f"{user_name} has no money in his account")
+            # print(f"{user_name} has no money in his account")
             return None
 
         substract_balance = balance
         current_balance = current_balance - substract_balance
+        if current_balance < 0:
+            return None
         
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
@@ -63,11 +67,22 @@ class main_db():
             s = (current_balance, user_name, )
             cursorObj.execute("UPDATE balance SET amount = ? WHERE user = ?", s)
         else:
-            print(f"User {user_name} does not exist")
+            # print(f"User {user_name} does not exist")
             return None
 
         con.commit()
-        return substract_balance 
+        return current_balance
+
+    def exchange_balance(self, fromUser, targetUser, amount):
+        fromUserBalance = self.substract_balance(fromUser, amount)
+        targetUserbalance = self.add_user_balance(targetUser, amount)
+        if fromUserBalance == None or targetUserbalance == None:
+            return None
+        out ={
+            "from_user_balance": fromUserBalance,
+            "target_user_balance": targetUserbalance
+        }
+        return out
 
     ## Starts part for the music cog
     def queue_exist(self, guildId):
