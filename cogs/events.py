@@ -40,7 +40,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.bot.user:
+        if message.author == self.bot.user:# or message.content[0] == bot.command:
             return
         references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
@@ -48,4 +48,3 @@ class Events(commands.Cog):
                 await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
-                await self.bot.process_commands(message)   

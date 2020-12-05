@@ -229,6 +229,30 @@ class Voice(commands.Cog):
         await ctx.send(embed=embed)
 
     @commands.command()
+    async def remove(self, ctx, delPos: int):
+        emoji = '❌'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+        data = database.get_queue(ctx.guild.id)
+        queue = data["queue"]
+        delPos = delPos -1
+        if delPos == data["currentPos"]:
+            database.modify_queue(ctx.guild.id, currentPos=0)
+        if delPos < 0 or delPos >= len(queue):
+            embed = Embed(
+                title = "**Ese número no esta en la cola**",
+                colour = Color(0xFF0000),
+            )
+            await ctx.send(embed=embed)
+            return
+        database.remove_from_queue(ctx.guild.id, delPos)
+        embed = Embed(
+                title = "**Borrado de la cola**",
+                colour = Color(0x3A425D),
+            )
+        await ctx.send(embed=embed)
+
+    @commands.command()
     async def clear(self, ctx):
         emoji = '⬜'
         msg = ctx.message
