@@ -158,6 +158,10 @@ class Voice(commands.Cog):
             embed.add_field(name = f"**{str(i + 1)} {current}**", value = f"[{video_title}]({video_url})")
             
             i +=1
+        if queue["shuffle"]:
+            embed.set_footer(text = "Reproducción mezclada activada")
+        else: 
+            embed.set_footer(text = "Reproducción mezclada desactivada")
         await ctx.send(embed = embed)
             
 
@@ -172,8 +176,12 @@ class Voice(commands.Cog):
 
         data = database.get_queue(ctx.guild.id)
         queue = data["queue"]
+        pos = data["currentPos"]
         if data["shuffle"]:
-            nextYtId = queue[random.randint(0, len(queue)-1)]
+            while pos == data["currentPos"]:
+                pos = random.randint(0, len(queue)-1)
+            database.modify_queue(ctx.guild.id, currentPos=pos)
+            nextYtId = queue[pos]
         else:
             nextYtId = queue[database.increment_current_pos(ctx.guild.id)]
         pending_command = self.bot.get_command("play")
@@ -187,12 +195,38 @@ class Voice(commands.Cog):
         msg = ctx.message
         await msg.add_reaction(emoji)
         voice = get(self.bot.voice_clients, guild = ctx.guild)
- 
-        nextYtId = database.get_queue(ctx.guild.id)["queue"][database.decrement_current_pos(ctx.guild.id)]
+        data = database.get_queue(ctx.guild.id)
+        queue = data["queue"]
+        pos = data["currentPos"]
+        if data["shuffle"]:
+            while pos == data["currentPos"]:
+                pos = random.randint(0, len(queue)-1)
+            database.modify_queue(ctx.guild.id, currentPos=pos)
+            nextYtId = queue[pos]
+        else:
+            nextYtId = queue[database.decrement_current_pos(ctx.guild.id)]
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
         await ctx.invoke(pending_command, nextYtId, True)
+
+    @commands.command()
+    async def shuffle(self, ctx):
+        emoji = '🔀'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+        data = database.get_queue(ctx.guild.id)
+        shuffle = not data["shuffle"]
+        database.modify_queue(ctx.guild.id, shuffle=shuffle)
+        if shuffle:
+            shuffleStr = "Activada"
+        else:
+            shuffleStr = "Desactivada"
+        embed = Embed(
+                title = f"Reproducción mezclada: **{shuffleStr}**",
+                colour = Color(0x3A425D),
+            )
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def clear(self, ctx):

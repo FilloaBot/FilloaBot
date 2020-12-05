@@ -117,16 +117,37 @@ class main_db():
         }
 
         return data
-    def modify_queue(self, guildId, queue=None, loop=False, loopPos=None, shuffle=False, currentPos=None):
-        if loopPos == None:
-            loopPos = 0
+    def modify_queue(self, guildId, queue=None, loop=None, loopPos=None, shuffle=None, currentPos=None):
         if queue == None:
             if self.get_queue(guildId) == None:
                 queue = None
             else:
                 queue = self.get_queue(guildId)["queue"]
+                queue = ";;;".join(queue)
+        else:
+            queue = ";;;".join(queue)
+        if loop == None:
+            if self.get_queue(guildId) == None:
+                loop = False
+            else:
+                loop = self.get_queue(guildId)["loop"]
+        if shuffle == None:
+            if self.get_queue(guildId) == None:
+                shuffle = False
+            else:
+                shuffle = self.get_queue(guildId)["shuffle"]
+        if loopPos == None:
+            if self.get_queue(guildId) == None:
+                loopPos = None
+            else:
+                loopPos = self.get_queue(guildId)["loopPos"]
+        if currentPos == None:
+            if self.get_queue(guildId) == None:
+                currentPos = 0
+            else:
+                currentPos = self.get_queue(guildId)["currentPos"]
+        
 
-        queue = ";;;".join(queue)
         loop = int(loop)
         shuffle = int(shuffle)
 
