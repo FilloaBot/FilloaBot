@@ -45,6 +45,22 @@ class Economy(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command()
-    async def steal(self, ctx):
-        pass
+    async def steal(self, ctx, target: Optional[Member]):
+        if target == None:
+            await ctx.send("Tienes que poner al usuario al que quieres robar fetido")
+            return None
     
+        user = str(ctx.author)
+        current_balance = database.get_user_balance(user)
+        if current_balance < 500:
+           await ctx.send("No puedes robar dinero hasta que tengas mas de 500 monedas manin")
+
+        probabilidad = random.randint(1, 8)
+        if probabilidad == 1:
+            database.substract_balance(target, int((current_balance+500)/current_balance))
+            susbtracted_money = int((current_balance+500)/current_balance)
+            await ctx.send(f"Has robado con exito {susbtracted_money}!")
+        else:
+            await ctx.send("No has podido robar :(")
+
+        return
