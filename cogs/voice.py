@@ -245,9 +245,19 @@ class Voice(commands.Cog):
             )
             await ctx.send(embed=embed)
             return
+        ydl_opts = {
+            'default_search': 'auto'
+        }
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            ytId = queue[delPos]
+            info_dict = ydl.extract_info(ytId, download=False)
+            video_id = info_dict.get("id", None)
+            video_url = "https://youtube.com/watch?v=" + video_id
+            video_title = info_dict.get('title', None)
         database.remove_from_queue(ctx.guild.id, delPos)
         embed = Embed(
                 title = "**Borrado de la cola**",
+                description = f"Borrado [{video_title}]({video_url})",
                 colour = Color(0x3A425D),
             )
         await ctx.send(embed=embed)
