@@ -130,6 +130,7 @@ class Voice(commands.Cog):
                 colour = Color(0x3A425D),
             )
             await ctx.send(embed=embed)
+            return
         for ytId in queue["queue"]:
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
                 info_dict = ydl.extract_info(ytId, download=False)
