@@ -40,7 +40,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author == self.bot.user:# or message.content[0] == bot.command:
+        if message.author == self.bot.user or message.content[0] == self.bot.command_prefix:
             return
         references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
