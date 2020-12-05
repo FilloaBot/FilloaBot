@@ -1,7 +1,7 @@
 import youtube_dl 
 import os
 import shutil
-
+import random
 
 import discord
 from discord.ext import commands
@@ -169,8 +169,13 @@ class Voice(commands.Cog):
         msg = ctx.message
         await msg.add_reaction(emoji)
         voice = get(self.bot.voice_clients, guild = ctx.guild)
- 
-        nextYtId = database.get_queue(ctx.guild.id)["queue"][database.increment_current_pos(ctx.guild.id)]
+
+        data = database.get_queue(ctx.guild.id)
+        queue = data["queue"]
+        if data["shuffle"]:
+            nextYtId = queue[random.randint(0, len(queue)-1)]
+        else:
+            nextYtId = queue[database.increment_current_pos(ctx.guild.id)]
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
