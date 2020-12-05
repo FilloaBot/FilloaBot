@@ -47,6 +47,28 @@ class main_db():
 
         con.commit()
 
+    def substract_balance(self, user_name, balance = 0):
+        current_balance = self.get_user_balance(user_name)
+        if current_balance == None:
+            print(f"{user_name} has no money in his account")
+            return None
+
+        substract_balance = balance
+        current_balance = current_balance - substract_balance
+        
+        con = sqlite3.connect(self.database)
+        cursorObj = con.cursor()
+
+        if self.user_exist(user_name):
+            s = (current_balance, user_name, )
+            cursorObj.execute("UPDATE balance SET amount = ? WHERE user = ?", s)
+        else:
+            print(f"User {user_name} does not exist")
+            return None
+
+        con.commit()
+        return substract_balance 
+
     ## Starts part for the music cog
     def queue_exist(self, guildId):
         con = sqlite3.connect(self.database)
