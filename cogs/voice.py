@@ -166,7 +166,7 @@ class Voice(commands.Cog):
         )
 
         currentPos = database.get_queue(ctx.guild.id)["currentPos"]
-        i=0
+        i = 0
         for video in videos:
             video_title = video["name"]
             video_url = video["url"]
@@ -181,9 +181,6 @@ class Voice(commands.Cog):
         else: 
             embed.set_footer(text = "Reproducción mezclada desactivada")
         await ctx.send(embed = embed)
-            
-
-
 
     @commands.command()
     async def next(self, ctx):
