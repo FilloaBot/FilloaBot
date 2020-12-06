@@ -4,10 +4,18 @@ from itertools import cycle
 import discord
 from discord.ext import commands, tasks
 from discord.utils import get
+from discord.ext.commands import (
+    BadArgument,
+    CommandNotFound,
+    MissingRequiredArgument,
+    CommandOnCooldown
+)
 
 from cogs.config.variables import status
 
 status = cycle(status)
+
+IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -16,7 +24,7 @@ class Events(commands.Cog):
     @tasks.loop(seconds = 3600)
     async def change_status(self):
         await self.bot.change_presence(activity = discord.Game(next(status)))
-        print("LOG: status changed")
+        #print("LOG: status changed")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -48,3 +56,11 @@ class Events(commands.Cog):
                 await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
+
+    @commands.Cog.listener()
+    async def on_command_error(self, ctx, exc):
+        if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
+            pass
+            
+        elif isinstance(exc, CommandOnCooldown):
+            await ctx.send(f"El comando esta en cooldown, intentalo de nuevo en `{exc.retry_after:,.2f}` segundos. MELON")
