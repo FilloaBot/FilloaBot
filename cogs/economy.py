@@ -3,10 +3,19 @@ from typing import Optional
 from discord import Color
 
 import discord
-from discord.ext import commands
 from discord import Embed, Member
+from discord.ext import commands
+from discord.ext.commands import cooldown, BucketType
+from discord.ext.commands import (
+    BadArgument,
+    CommandNotFound,
+    MissingRequiredArgument,
+    CommandOnCooldown
+)
 
 from cogs.utils.database import *
+
+IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
 database = main_db("./database.db")
 
@@ -17,9 +26,9 @@ class Economy(commands.Cog):
     @commands.command(
         pass_context = True
     )
+    @cooldown(1, 30, BucketType.user)
     async def farm(self, ctx):
         user = str(ctx.author)
-
         money = random.randint(200, 600)
         database.add_user_balance(user, money)
         
@@ -27,22 +36,30 @@ class Economy(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx, user: Optional[Member]):
-        user = user or ctx.message.author
-        userStr = str(user)
-        embed = Embed(
-            title = f"Balance económico [{user.name}]",
-            colour = Color(0xFFFFFF)
-        )
+        try:
+            user = user or ctx.message.author
+            userStr = str(user)
+            embed = Embed(
+                title = f"Balance económico [{user.name}]",
+                colour = Color(0xFFFFFF)
+            )
 
-        if not database.user_exist(userStr):
-            await ctx.send("El usuario no existe")
-            return 
-            
-        money = str(database.get_user_balance(userStr))
+            if not database.user_exist(userStr):
+                await ctx.send("El usuario no existe")
+                return 
+                
+            money = str(database.get_user_balance(userStr))
 
-        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
+            embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
 
-        await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
+        except discord.ext.commands.errors.CommandOnCooldown:
+            await ctx.send("El comando esta en cooldown fetido")
+
+    @balance.error
+    async def balance_error(self, ctx, exc):
+        if isinstance(exc, BadArgument):
+            await ctx.send("El usuario no existe melon")
 
     @commands.command()
     async def steal(self, ctx, target: Optional[Member]):
