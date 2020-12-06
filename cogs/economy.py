@@ -5,17 +5,9 @@ from discord import Color
 import discord
 from discord import Embed, Member
 from discord.ext import commands
-from discord.ext.commands import cooldown, BucketType
-from discord.ext.commands import (
-    BadArgument,
-    CommandNotFound,
-    MissingRequiredArgument,
-    CommandOnCooldown
-)
+from discord.ext.commands import cooldown, BucketType, BadArgument
 
 from cogs.utils.database import *
-
-IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
 
 database = main_db("./database.db")
 
@@ -36,25 +28,23 @@ class Economy(commands.Cog):
 
     @commands.command()
     async def balance(self, ctx, user: Optional[Member]):
-        try:
-            user = user or ctx.message.author
-            userStr = str(user)
-            embed = Embed(
-                title = f"Balance económico [{user.name}]",
-                colour = Color(0xFFFFFF)
-            )
 
-            if not database.user_exist(userStr):
-                await ctx.send("El usuario no existe")
-                return 
+        user = user or ctx.message.author
+        userStr = str(user)
+        embed = Embed(
+            title = f"Balance económico [{user.name}]",
+            colour = Color(0xFFFFFF)
+        )
+
+        if not database.user_exist(userStr):
+            await ctx.send("El usuario no existe")
+            return 
                 
-            money = str(database.get_user_balance(userStr))
+        money = str(database.get_user_balance(userStr))
 
-            embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
+        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
 
-            await ctx.send(embed = embed)
-        except discord.ext.commands.errors.CommandOnCooldown:
-            await ctx.send("El comando esta en cooldown fetido")
+        await ctx.send(embed = embed)
 
     @balance.error
     async def balance_error(self, ctx, exc):
@@ -91,3 +81,26 @@ class Economy(commands.Cog):
             await ctx.send(f"Te han pillado al robar :(\nPero {target.mention} te perdonan y no pagas multa.")
 
         return
+
+    @commands.command()
+    @cooldown(1, 60, BucketType.user)
+    async def give(self, ctx, target: Member, cantidad = 0):
+        if target == None:
+            await ctx.send("Tienes que poner a quien vas a darle la pasta crack")
+            return
+        if cantidad == 0:
+            await ctx.send("Tienes que poner la cantidad dinero que quieres dar manin")
+            return
+
+        targetStr = str(target)
+        userStr  = str(ctx.message.author)
+        current_balance = database.get_user_balance(userStr)
+
+        if current_balance == 0:
+            await ctx.send("No tienes dinero para dar crack")
+            return None
+
+        database.exchange_balance(targetStr, userStr, cantidad)
+        await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` de monedas. Joder, ni que fueras bolsonaro")
+
+        return 0
