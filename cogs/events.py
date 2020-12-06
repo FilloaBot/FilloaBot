@@ -15,7 +15,7 @@ from cogs.config.variables import status
 
 status = cycle(status)
 
-IGNORE_EXCEPTIONS = (CommandNotFound, BadArgument)
+IGNORE_EXCEPTIONS = (BadArgument)
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -59,8 +59,8 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, exc):
-        if any([isinstance(exc, error) for error in IGNORE_EXCEPTIONS]):
-            pass
-            
-        elif isinstance(exc, CommandOnCooldown):
+        if isinstance(exc, CommandOnCooldown):
             await ctx.send(f"El comando esta en cooldown, intentalo de nuevo en `{exc.retry_after:,.2f}` segundos. MELON")
+
+        elif isinstance(exc, CommandNotFound):
+            await ctx.send("Ese comando no existe papafilloas :middle_finger:")
