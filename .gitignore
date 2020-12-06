@@ -148,3 +148,6 @@ token.json
 
 #For avoiding the downloads
 *.mp3
+
+#For avoiding the start scripts
+*.bat
