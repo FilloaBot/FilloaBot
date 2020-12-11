@@ -52,6 +52,7 @@ class Economy(commands.Cog):
             await ctx.send("El usuario no existe melon")
 
     @commands.command()
+    @cooldown(1, 60, BucketType.user)
     async def steal(self, ctx, target: Optional[Member]):
         if target == None:
             await ctx.send("Tienes que poner al usuario al que quieres robar fetido")
@@ -83,15 +84,16 @@ class Economy(commands.Cog):
         return
 
     @commands.command()
-    @cooldown(1, 60, BucketType.user)
-    async def give(self, ctx, target: Member, cantidad = 0):
+    @cooldown(1, 10, BucketType.user)
+    async def give(self, ctx, target: Member, cantidad: int or str):
         if target == None:
             await ctx.send("Tienes que poner a quien vas a darle la pasta crack")
             return
-        if cantidad == 0:
+
+        if type(cantidad) == int and cantidad == 0:
             await ctx.send("Tienes que poner la cantidad dinero que quieres dar manin")
             return
-
+        
         targetStr = str(target)
         userStr  = str(ctx.message.author)
         current_balance = database.get_user_balance(userStr)
@@ -100,7 +102,10 @@ class Economy(commands.Cog):
             await ctx.send("No tienes dinero para dar crack")
             return None
 
-        database.exchange_balance(targetStr, userStr, cantidad)
+        if cantidad == "all" or cantidad == "ALL":
+            cantidad = database.get_user_balance(userStr)
+
+        database.exchange_balance(userStr, targetStr, cantidad)
         await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` de monedas. Joder, ni que fueras bolsonaro")
 
         return 0
