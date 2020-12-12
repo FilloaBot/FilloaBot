@@ -84,6 +84,23 @@ class main_db():
         }
         return out
 
+    def deposit_money(self, user_name, amount):
+        con = sqlite3.connect(self.database)
+        cursorObj = con.cursor() 
+
+        current_wallet_balance = self.get_user_balance(user_name)
+        if current_wallet_balance == 0:
+            print("No tienes dineros")
+            return None
+        
+        if self.user_exist(user_name) and current_wallet_balance >= amount:
+            s = (amount, user_name, )
+            self.substract_balance(user_name, amount)
+            cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
+
+        con.commit()
+        return amount
+
     ## Starts part for the music cog
     def queue_exist(self, guildId):
         con = sqlite3.connect(self.database)

@@ -109,3 +109,17 @@ class Economy(commands.Cog):
         await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` de monedas. Joder, ni que fueras bolsonaro")
 
         return 0
+
+    @commands.command()
+    async def dep(self, ctx, cantidad):
+        userStr = str(ctx.message.author)
+        print("Tratando de depositar dineros")
+        if cantidad == 0:
+            await ctx.send("A ver manin, vas a depositar 0 dineros en tu cuenta?")
+            return
+        
+        database.deposit_money(userStr, cantidad)
+        print("Dineros depositados")
+
+        await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
+        return
