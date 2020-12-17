@@ -2,6 +2,8 @@ import youtube_dl
 import os
 import shutil
 import random
+import asyncio
+from typing import Optional
 
 import discord
 from discord.ext import commands
@@ -44,7 +46,10 @@ class Voice(commands.Cog):
             await ctx.send("No estoy conectado a ningun canal fetido")
 
     @commands.command()
-    async def play(self, ctx, url: str, noQueue="f"):
+    async def play(self, ctx, url: Optional[str], noQueue="False"):#No queue's default is a string for allowing various words in arguments
+        if url == None:
+            pending_command = self.bot.get_command("resume")
+            await ctx.invoke(pending_command)
         if not noQueue == True:
             noQueue = False
         if ctx.author.voice == None:
@@ -124,7 +129,15 @@ class Voice(commands.Cog):
             player = FFmpegPCMAudio(filePath)
             if voice.is_playing():
                 voice.stop()
-            voice.play(player)
+            def callback(error):
+                if error != None:
+                    raise error
+                elif not noQueue:
+                    
+                    nonlocal ctx
+                    pending_command = self.bot.get_command("next")
+                    self.bot.loop.create_task(ctx.invoke(pending_command, True))
+            voice.play(player, after=callback)
         else:
             embed = Embed(
                 title = "**Añadido a la cola**",
@@ -183,10 +196,13 @@ class Voice(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command()
-    async def next(self, ctx):
+    async def next(self, ctx, isAutomatedCall=False):
         emoji = '⏭️'
         msg = ctx.message
-        await msg.add_reaction(emoji)
+        if not isAutomatedCall == True:
+            isAutomatedCall = False
+        if not isAutomatedCall:
+            await msg.add_reaction(emoji)
         voice = get(self.bot.voice_clients, guild = ctx.guild)
 
         data = database.get_queue(ctx.guild.id)
