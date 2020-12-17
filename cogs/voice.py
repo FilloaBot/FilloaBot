@@ -103,7 +103,9 @@ class Voice(commands.Cog):
                 return
         if not noQueue:
             database.insert_into_queue(ctx.guild.id, video_id)
+
         url = video_id
+
 
         if voice == None or not voice.is_playing():
             filePath = str(ctx.guild.id) + ".mp3"
@@ -119,7 +121,8 @@ class Voice(commands.Cog):
                 }]
             }
             with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([url])
+                ydl.download([url])            
+            database.modify_queue(ctx.guild.id, currentPos=database.get_queue(ctx.guild.id)["queue"].index(url))    
             embed = Embed(
                 title = "**Reproduciendo**",
                 description = f"[{video_title}]({video_url}) [{ctx.message.author.mention}]",
@@ -211,10 +214,14 @@ class Voice(commands.Cog):
         if data["shuffle"]:
             while pos == data["currentPos"]:
                 pos = random.randint(0, len(queue)-1)
-            database.modify_queue(ctx.guild.id, currentPos=pos)
-            nextYtId = queue[pos]
+            # database.modify_queue(ctx.guild.id, currentPos=pos)
         else:
-            nextYtId = queue[database.increment_current_pos(ctx.guild.id)]
+            pos += 1#database.increment_current_pos(ctx.guild.id)
+        if pos >= len(queue):
+            pos=0
+        if pos < 0:
+            pos= len(queue) - 1
+        nextYtId = queue[pos]
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
@@ -232,10 +239,14 @@ class Voice(commands.Cog):
         if data["shuffle"]:
             while pos == data["currentPos"]:
                 pos = random.randint(0, len(queue)-1)
-            database.modify_queue(ctx.guild.id, currentPos=pos)
-            nextYtId = queue[pos]
+            # database.modify_queue(ctx.guild.id, currentPos=pos)
         else:
-            nextYtId = queue[database.decrement_current_pos(ctx.guild.id)]
+            pos -= 1#database.decrement_current_pos(ctx.guild.id)
+        if pos >= len(queue):
+            pos=0
+        if pos < 0:
+            pos= len(queue) - 1
+        nextYtId = queue[pos]
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
