@@ -1,3 +1,4 @@
+import requests
 import json
 import re
 from itertools import cycle
@@ -53,7 +54,16 @@ class Events(commands.Cog):
         references = json.load(open("cogs/config/references.json"))["references"]
         for reference in references:
             if re.search(reference["regex"], message.content.lower()) != None:
-                await message.channel.send(reference["answer"])
+                if re.search("^https?://.*\..*$", reference["answer"]):
+
+                    url = reference["answer"]
+                    fileName = url[url.rindex("/")+1:]
+                    r = requests.get(url)
+                    with open(fileName, 'wb') as f:
+                        f.write(r.content) 
+                    await message.channel.send(file=discord.File(fileName))
+                else:
+                    await message.channel.send(reference["answer"])
                 for reaction in reference["reactions"]:
                     await message.add_reaction(reaction)
 
