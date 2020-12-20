@@ -1,4 +1,6 @@
 import random
+import aiohttp
+import json
 from typing import Optional
 
 import discord
@@ -53,3 +55,6 @@ class Filloas(commands.Cog):
     async def ping(self, ctx):
         latency = self.bot.latency
         await ctx.send(f"La latencia del bot es: {latency}")
+
+def setup(bot):
+    bot.add_cog(Filloas(bot))

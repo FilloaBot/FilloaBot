@@ -74,3 +74,6 @@ class Events(commands.Cog):
 
         elif isinstance(exc, CommandNotFound):
             await ctx.send("Ese comando no existe papafilloas :middle_finger:")
+
+def setup(bot):
+    bot.add_cog(Events(bot))

@@ -123,3 +123,6 @@ class Economy(commands.Cog):
 
         await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
         return
+
+def setup(bot):
+    bot.add_cog(Economy(bot))

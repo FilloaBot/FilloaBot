@@ -39,3 +39,6 @@ class Admin_tools(commands.Cog):
         )
         embed.set_thumbnail(url = target.avatar_url)
         await ctx.send(embed = embed)
+
+def setup(bot):
+    bot.add_cog(Admin_tools(bot))

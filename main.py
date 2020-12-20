@@ -2,12 +2,6 @@ import json
 import logging
 import sys
 
-from cogs.filloas import Filloas
-from cogs.admin_tools import Admin_tools
-from cogs.events import Events
-from cogs.voice import Voice
-from cogs.economy import Economy
-
 import discord
 from discord.ext import commands
 
@@ -30,13 +24,15 @@ intents.messages = True
 intents.emojis = True
 bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
 
-bot.add_cog(Filloas(bot))
-bot.add_cog(Admin_tools(bot))
-bot.add_cog(Events(bot))
-bot.add_cog(Economy(bot))
-if sys.argv[1:] == "no_voice":
-    pass
-else:
-    bot.add_cog(Voice(bot))
+bot.cogs_list = [
+    "cogs.filloas",
+    "cogs.admin_tools",
+    "cogs.events",
+    "cogs.voice",
+    "cogs.economy"
+]
+
+for cog in bot.cogs_list:
+    bot.load_extension(cog)
 
 bot.run(token)

@@ -352,4 +352,6 @@ class Voice(commands.Cog):
 
         if not voice == None:
             voice.stop()
-        
+
+def setup(bot):
+    bot.add_cog(Voice(bot))
