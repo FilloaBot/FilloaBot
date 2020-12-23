@@ -57,7 +57,7 @@ class Events(commands.Cog):
                 if re.search("^https?://.*\..*$", reference["answer"]):
 
                     url = reference["answer"]
-                    fileName = url[url.rindex("/")+1:]
+                    fileName = "cache/" + url[url.rindex("/")+1:]
                     r = requests.get(url)
                     with open(fileName, 'wb') as f:
                         f.write(r.content) 

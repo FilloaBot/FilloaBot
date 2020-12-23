@@ -108,7 +108,7 @@ class Voice(commands.Cog):
 
 
         if voice == None or not voice.is_playing():
-            filePath = str(ctx.guild.id) + ".mp3"
+            filePath = "cache/" + str(ctx.guild.id) + ".mp3"
             if os.path.exists(filePath):
                 os.remove(filePath)
             ydl_opts = {
@@ -329,7 +329,13 @@ class Voice(commands.Cog):
         voice = get(self.bot.voice_clients, guild = ctx.guild)
 
         if not voice == None and voice.is_paused():
-                voice.resume()
+            voice.resume()
+        elif voice == None:
+            pending_command = self.bot.get_command("play")
+            data = database.get_queue(ctx.guild.id)
+            YtId = data["queue"][data["currentPos"]]
+            await ctx.invoke(pending_command, YtId, True)
+
     
     @commands.command()
     async def pause(self, ctx):

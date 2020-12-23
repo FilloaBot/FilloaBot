@@ -146,8 +146,8 @@ config/
 #For avoiding token.json
 token.json
 
-#For avoiding the downloads
-*.mp3
+#For avoiding the cache(usually downloads)
+cache/
 
 #For avoiding the start scripts
 *.bat
