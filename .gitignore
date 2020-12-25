@@ -151,3 +151,6 @@ cache/
 
 #For avoiding the start scripts
 *.bat
+
+#For avoding the downloaded songs
+*.mp3
