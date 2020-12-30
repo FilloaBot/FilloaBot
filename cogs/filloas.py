@@ -4,7 +4,7 @@ import json
 from typing import Optional
 
 import discord
-from discord import Bot
+# from discord import Bot
 from discord.ext import commands
 from discord import Embed, Member
 
@@ -14,10 +14,13 @@ class Filloas(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
-        self.invite = discord.utils.oauth_url((client_id=Bot.client_id, permissions=discord.Permissions(37080128)))
+        # while not bot.is_ready():
+        #     pass
+        # self.invite = discord.utils.oauth_url(client_id=bot.user.id, permissions=discord.Permissions(37080128))
+        self.inviteLink = None
 
     @commands.command(
-        pass_context = Tru
+        pass_context = True
     )
     async def aleatorio(self, ctx, num1: int, num2: int):
         try:
@@ -59,8 +62,10 @@ class Filloas(commands.Cog):
         await ctx.send(f"La latencia del bot es: {latency * 1000} ms")
         
     @commands.command()
-    async def support(self, ctx):
-        await ctx.send(f"Puedes invitar el bot aqui <{self.bot.invite}>")
+    async def invite(self, ctx):
+        if self.inviteLink == None:
+            self.inviteLink = discord.utils.oauth_url(client_id=self.bot.user.id, permissions=discord.Permissions(37080128))
+        await ctx.send(f"Puedes invitar el bot aqui <{self.inviteLink}>")
 
 def setup(bot):
     bot.add_cog(Filloas(bot))
