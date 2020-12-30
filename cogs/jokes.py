@@ -1,21 +1,11 @@
-import random
-import aiohttp
-import json
-from typing import Optional
-import re
 import pyjokes
 
 import discord
-# from discord import Bot
 from discord.ext import commands
-from discord import Embed, Member
-
-from cogs.config.variables import urls
 
 class Jokes(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-
 
     @commands.command(
         name = "chiste",
@@ -23,13 +13,12 @@ class Jokes(commands.Cog):
         brief = "Chistes de programadores",
         pass_context = True
     )
-    async def filloas(self, ctx, extraShit="-"):
+    async def chiste(self, ctx, extraShit="-"):
         lang="es"
         category = "all"
         # if re.search("chuck|norris", ctx.message.content.lower()):
         #     category = "chuck"
         await ctx.send(pyjokes.get_joke(lang, category))
-
 
 def setup(bot):
     bot.add_cog(Jokes(bot))
