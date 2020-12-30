@@ -23,11 +23,11 @@ class Jokes(commands.Cog):
         brief = "Chistes de programadores",
         pass_context = True
     )
-    async def filloas(self, ctx, extraShit=""):
+    async def filloas(self, ctx, extraShit="-"):
         lang="es"
         category = "all"
-        if re.search("chuck|norris", ctx.message.content.lower()):
-            category = "chuck"
+        # if re.search("chuck|norris", ctx.message.content.lower()):
+        #     category = "chuck"
         await ctx.send(pyjokes.get_joke(lang, category))
 
 
