@@ -2,7 +2,7 @@
 {"regex": "boton", "answer": "Ten cuidado, así vas a invocar a BOTONEITOR. Dudo que quieras botones en tu casa.", "reactions": []},
 {"regex": "filmora", "answer": "https://cdn.imgpaste.net/2020/12/06/OR1sm.png", "reactions": ["🤬"]},
 {"regex": "onfire|loko", "answer": "https://cdn.imgpaste.net/2020/12/06/OR3DS.png", "reactions": ["⚰"]},
-{"regex": "osiños|chechu|lopez|teixeiro", "answer": "https://tgho.st/download_file/XYqwr/file.mp4", "reactions": ["⚾"]},
+{"regex": "osiños|chechu|lopez", "answer": "https://tgho.st/download_file/XYqwr/file.mp4", "reactions": ["⚾"]},
 {"regex": "boiro", "answer": "https://cdn.imgpaste.net/2020/12/31/U69re.png", "reactions": ["🅱️"]},
 {"regex": "0$|cero$", "answer": "Te reviento el agujero", "reactions": ["😎"]}, 
 {"regex": "1$|uno$", "answer": "Por el culo te vacuno", "reactions": ["😎"]}, 
@@ -15,6 +15,7 @@
 {"regex": "8$|ocho$", "answer": "Por el culo te la entocho", "reactions": ["😎"]},
 {"regex": "9$|nueve$", "answer": "En tu culo se me mueve", "reactions": ["😎"]},
 {"regex": "ivan", "answer": ":rainbow_flag:", "reactions": []},
+{"regex": "teixeiro", "answer": "https://ep01.epimg.net/politica/imagenes/2018/12/11/actualidad/1544531710_241835_1544532353_noticia_normal.jpg", "reactions": []},
 {"regex":"gracias filloa bot|gracias filloabot", "answer":"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F3f%2F64%2Fdc%2F3f64dc57cc8806d237ce64ef02f7a466.jpg", "reactions":["😎"]},
 {"regex": "ella no te quiere", "answer": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.gfycat.com%2FInbornRingedAsianelephant-size_restricted.gif", "reactions": ["😭"]}
 ]} 
