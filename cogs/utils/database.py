@@ -28,6 +28,19 @@ class main_db():
 
         return out[0][0]
 
+    def get_user_bank(self, user_name):
+        con = sqlite3.connect(self.database)
+        cursorObj = con.cursor()
+        s = (user_name, )
+        cursorObj.execute("SELECT bank FROM balance WHERE user = ?", s)
+
+        out = cursorObj.fetchall()
+
+        if not out:
+            return None
+        
+        return out[0][0]
+
     def add_user_balance(self, user_name, balance = 0):
         current_balance = self.get_user_balance(user_name)
         if current_balance == None:
@@ -47,6 +60,34 @@ class main_db():
             cursorObj.execute("UPDATE balance SET amount = ? WHERE user = ?", s)
 
         con.commit()
+        return balance
+
+    def add_bank(self, user_name, balance: int):   
+        #Check if the user exists
+        if user_name == None or not self.user_exist(user_name):
+            print(f"{user_name} does not exists")
+            return None
+        
+        current_balance = self.get_user_balance(user_name)
+
+        #Check if the user has money
+        if current_balance < 0:
+            print(f"No tiene pasta el user {user_name}")
+            return None
+        elif balance > current_balance:
+            return None
+
+        current_balance = current_balance - balance
+        
+        con = sqlite3.connect(self.database)
+        cursorObj = con.cursor()
+
+        s = (balance, user_name, )
+        cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
+        con.commit()
+
+        self.substract_balance(user_name, balance)
+
         return balance
 
     def substract_balance(self, user_name, balance = 0):
@@ -73,6 +114,30 @@ class main_db():
         con.commit()
         return current_balance
 
+    def substract_bank(self, user_name, balance: int):
+        current_balance = self.get_user_bank(user_name)
+        if current_balance == None:
+            # print(f"{user_name} has no money in his account")
+            return None
+
+        substract_balance = balance
+        current_balance = current_balance - substract_balance
+        if current_balance < 0:
+            return None
+        
+        con = sqlite3.connect(self.database)
+        cursorObj = con.cursor()
+
+        if self.user_exist(user_name):
+            s = (current_balance, user_name, )
+            cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
+        else:
+            # print(f"User {user_name} does not exist")
+            return None
+
+        con.commit()
+        return current_balance
+
     def exchange_balance(self, fromUser, targetUser, amount):
         fromUserBalance = self.substract_balance(fromUser, amount)
         targetUserbalance = self.add_user_balance(targetUser, amount)
@@ -84,23 +149,10 @@ class main_db():
         }
         return out
 
-    def deposit_money(self, user_name, amount):
-        con = sqlite3.connect(self.database)
-        cursorObj = con.cursor() 
 
-        current_wallet_balance = self.get_user_balance(user_name)
-        if current_wallet_balance == 0:
-            print("No tienes dineros")
-            return None
-        
-        if self.user_exist(user_name) and current_wallet_balance >= amount:
-            s = (amount, user_name, )
-            self.substract_balance(user_name, amount)
-            cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
-
-        con.commit()
-        return amount
-
+    """
+    Music operations in the dabase. A pechi le gusta oliveira
+    """
     ## Starts part for the music cog
     def queue_exist(self, guildId):
         con = sqlite3.connect(self.database)

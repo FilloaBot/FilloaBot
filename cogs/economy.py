@@ -41,8 +41,10 @@ class Economy(commands.Cog):
             return 
                 
         money = str(database.get_user_balance(userStr))
+        bank = str(database.get_user_bank(userStr))
 
         embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
+        embed.add_field(name = "-**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}**")
 
         await ctx.send(embed = embed)
 
@@ -118,10 +120,23 @@ class Economy(commands.Cog):
             await ctx.send("A ver manin, vas a depositar 0 dineros en tu cuenta?")
             return
         
-        database.deposit_money(userStr, cantidad)
+        database.add_bank(userStr, cantidad)
         print("Dineros depositados")
 
         await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
+        return
+
+    async def with(self, ctx, cantidad):
+        userStr = str(ctx.message.author)
+        print("Tratando de susbtraer dineros")
+        if cantidad == 0:
+            await ctx.send("A ver manin, vas a sacar de tu cuena 0 dineros?")
+            return
+
+        database.substract_bank(userStr, cantidad)
+        database.add_user_balance(userStr, cantidad)
+        print("Dineros sacados de la cuenta")
+        await ctx.send(f"Has sacado de tu cuenta {cantidad} dineros, ten cuidado que no te lo roben manin")
         return
 
 def setup(bot):
