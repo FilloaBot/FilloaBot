@@ -44,7 +44,7 @@ class Economy(commands.Cog):
         bank = str(database.get_user_bank(userStr))
 
         embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
-        embed.add_field(name = "-**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}**")
+        embed.add_field(name = "_**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}**")
 
         await ctx.send(embed = embed)
 
@@ -113,32 +113,18 @@ class Economy(commands.Cog):
         return 0
 
     @commands.command()
-    async def dep(self, ctx, cantidad):
+    async def deposit(self, ctx, cantidad: int):
         userStr = str(ctx.message.author)
-        print("Tratando de depositar dineros")
-        if cantidad == 0:
-            await ctx.send("A ver manin, vas a depositar 0 dineros en tu cuenta?")
-            return
-        
-        database.add_bank(userStr, cantidad)
-        print("Dineros depositados")
+        database.deposit(userStr, cantidad)
 
         await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
-        return
 
-    @commands.command(aliase = "with")
-    async def withdraw(self, ctx, cantidad):
+    @commands.command()
+    async def withdraw(self, ctx, cantidad: int):
         userStr = str(ctx.message.author)
-        print("Tratando de susbtraer dineros")
-        if cantidad == 0:
-            await ctx.send("A ver manin, vas a sacar de tu cuena 0 dineros?")
-            return
+        database.withdraw(userStr, cantidad)
 
-        database.substract_bank(userStr, cantidad)
-        database.add_user_balance(userStr, cantidad)
-        print("Dineros sacados de la cuenta")
         await ctx.send(f"Has sacado de tu cuenta {cantidad} dineros, ten cuidado que no te lo roben manin")
-        return
 
 def setup(bot):
     bot.add_cog(Economy(bot))
