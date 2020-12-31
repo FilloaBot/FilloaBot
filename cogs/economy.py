@@ -126,7 +126,8 @@ class Economy(commands.Cog):
         await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
         return
 
-    async def with(self, ctx, cantidad):
+    @commands.command(aliase = "with")
+    async def withdraw(self, ctx, cantidad):
         userStr = str(ctx.message.author)
         print("Tratando de susbtraer dineros")
         if cantidad == 0:
