@@ -61,7 +61,7 @@ class main_db():
 
         con.commit()
         return balance
-
+        
     def substract_balance(self, user_name, balance = 0):
         current_balance = self.get_user_balance(user_name)
         if current_balance == None:
@@ -87,13 +87,13 @@ class main_db():
         return current_balance
 
     def deposit(self, user_name, balance: int):   
-        current_balance = self.get_user_balance(user_name)
-        current_balance = current_balance - balance
-        
+        current_bank_balance = self.get_user_bank(user_name)
+        current_bank_balance += balance
+
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
 
-        s = (balance, user_name, )
+        s = (current_bank_balance, user_name, )
         cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
         con.commit()
 
@@ -104,17 +104,16 @@ class main_db():
     def withdraw(self, user_name, balance: int):
         current_balance = self.get_user_bank(user_name)
 
-        substract_balance = balance
-        current_balance = current_balance - substract_balance
+        current_balance -= balance
         
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
     
-        s = (user_name, substract_balance, )
-        cursorObj.execute("UPDATE balance SET user = ? WHERE bank = ?", s)
+        s = (current_balance, user_name, )
+        cursorObj.execute("UPDATE balance SET bank = ? WHERE user = ?", s)
         con.commit()
 
-        self.add_user_balance(user_name, substract_balance)
+        self.add_user_balance(user_name, balance)
         
         return current_balance
 
@@ -128,7 +127,6 @@ class main_db():
             "target_user_balance": targetUserbalance
         }
         return out
-
 
     """
     Music operations in the dabase. A pechi le gusta oliveira
