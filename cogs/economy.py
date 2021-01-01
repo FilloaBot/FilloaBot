@@ -15,9 +15,7 @@ class Economy(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(
-        pass_context = True
-    )
+    @commands.command()
     @cooldown(1, 30, BucketType.user)
     async def farm(self, ctx):
         user = str(ctx.author)
@@ -113,18 +111,43 @@ class Economy(commands.Cog):
         return 0
 
     @commands.command()
-    async def deposit(self, ctx, cantidad: int):
-        userStr = str(ctx.message.author)
-        database.deposit(userStr, cantidad)
+    async def deposit(self, ctx, cantidad: int or str):
+        if cantidad == None:
+            await ctx.send("Tienes que poner la cantidad que quieres depositar")
+            return
 
-        await ctx.send(f"Has depositado {cantidad} en tu cuenta de banco. Momento bolsonaro")
+        userStr = str(ctx.message.author)
+        current_balance = database.get_user_balance(userStr)
+        
+        if current_balance == 0:
+            await ctx.send("No tienes dinero para depositar")
+            return
+
+        if cantidad == "all" or cantidad == "ALL":
+            cantidad = database.get_user_balance(userStr)
+
+        database.deposit(userStr, cantidad)
+        await ctx.send(f"Has depositado en tu cuenta {cantidad}")
 
     @commands.command()
-    async def withdraw(self, ctx, cantidad: int):
-        userStr = str(ctx.message.author)
-        database.withdraw(userStr, cantidad)
+    async def withdraw(self, ctx, cantidad):
+        if type(cantidad) == int and cantidad == 0:
+            await ctx.send("Tienes que poner la cantidad que quieres sacar manin")
+            return
 
-        await ctx.send(f"Has sacado de tu cuenta {cantidad} dineros, ten cuidado que no te lo roben manin")
+        userStr = str(ctx.message.author)
+        current_bank_balance = database.get_user_bank(userStr)
+        
+        if current_bank_balance == 0:
+            await ctx.send("No tienes dinero para sacar de la cuenta manin")
+            return
+
+        if cantidad == "all" or cantidad == "ALL":
+            database.withdraw(userStr, current_bank_balance)
+            await ctx.send(f"Has sacado de tu cuenta {current_bank_balance} dineros, ten cuidado que no te lo roben manin")
+        else:
+            database.withdraw(userStr, cantidad)
+            await ctx.send(f"Has sacado de tu cuenta {cantidad} dineros, ten cuidado que no te lo roben manin")
 
 def setup(bot):
     bot.add_cog(Economy(bot))
