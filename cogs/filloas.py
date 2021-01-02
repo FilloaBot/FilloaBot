@@ -2,6 +2,7 @@ import random
 import aiohttp
 import json
 from typing import Optional
+import praw
 
 import discord
 # from discord import Bot
@@ -9,6 +10,12 @@ from discord.ext import commands
 from discord import Embed, Member
 
 from cogs.config.variables import urls
+
+with open("cogs/config/reddit.json") as file:
+    data = json.load(file)
+    
+token = data["reddit_token"]
+secret_token = data["reddit_secret_token"]
 
 class Filloas(commands.Cog):
     def __init__(self, bot):
@@ -18,6 +25,16 @@ class Filloas(commands.Cog):
         #     pass
         # self.invite = discord.utils.oauth_url(client_id=bot.user.id, permissions=discord.Permissions(37080128))
         self.inviteLink = None
+
+        self.reddit = None
+        if token and secret_token:
+            self.reddit = praw.Reddit(
+                client_id = token,
+                client_secret = secret_token,
+                user_name = "",
+                password = "",
+                user_agent = "FILLOA_BOT" 
+            )
 
     @commands.command(
         pass_context = True
@@ -66,6 +83,30 @@ class Filloas(commands.Cog):
         if self.inviteLink == None:
             self.inviteLink = discord.utils.oauth_url(client_id=self.bot.user.id, permissions=discord.Permissions(37080128))
         await ctx.send(f"Puedes invitar el bot aqui <{self.inviteLink}>")
+
+    @commands.command(
+        brief = "Show memes from reddit"
+    )
+    async def meme(self, ctx):
+        subreddit = self.reddit.subreddit("memes")
+        all_submisions = []
+
+        top = subreddit.top(limit = 50)
+
+        for submission in top:
+            all_submisions.append(submission)
+
+        random_sub = random.choice(all_submisions)
+
+        name = random_sub.title
+        url = random_sub.url
+
+        embed = Embed(
+            title = name
+        )
+        embed.add_image(url = url)
+
+        await ctx.send(embed)
 
 def setup(bot):
     bot.add_cog(Filloas(bot))
