@@ -8,7 +8,7 @@ from discord.ext import commands
 #Cargar el token del archivo json
 with open("token.json") as file:
     data = json.load(file)
-token = data['token']
+token = data['bot_token']
 
 #Activar el logging
 logger = logging.getLogger("discord")
