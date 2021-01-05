@@ -87,8 +87,8 @@ class Filloas(commands.Cog):
     @commands.command(
         brief = "Show memes from reddit"
     )
-    async def meme(self, ctx):
-        subreddit = self.reddit.subreddit("polageek")
+    async def meme(self, ctx, subreddit="memes"):
+        subreddit = self.reddit.subreddit(subreddit)
         all_submisions = []
 
         top = subreddit.top(limit = 50)
