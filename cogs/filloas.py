@@ -98,13 +98,19 @@ class Filloas(commands.Cog):
 
         random_sub = random.choice(all_submisions)
 
-        name = random_sub.title
+        title = random_sub.title
         url = random_sub.url
+        name = random_sub.name
+        author = random_sub.author
+        link = "https://www.reddit.com" + random_sub.permalink
+        author_link = "https://www.reddit.com/user/" + author.name
 
         embed = Embed(
-            title = name
+            title = title
         )
         embed.set_image(url = url)
+        embed.set_footer(text = "Reddit",icon_url = "https://images-eu.ssl-images-amazon.com/images/I/418PuxYS63L.png")
+        embed.set_author(name=f"Posted by u/{author}", url=link)
 
         await ctx.send(embed = embed)
 
