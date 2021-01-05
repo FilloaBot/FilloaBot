@@ -88,7 +88,7 @@ class Filloas(commands.Cog):
         brief = "Show memes from reddit"
     )
     async def meme(self, ctx):
-        subreddit = self.reddit.subreddit("memes")
+        subreddit = self.reddit.subreddit("polageek")
         all_submisions = []
 
         top = subreddit.top(limit = 50)
@@ -104,9 +104,9 @@ class Filloas(commands.Cog):
         embed = Embed(
             title = name
         )
-        embed.add_image(url = url)
+        embed.set_image(url = url)
 
-        await ctx.send(embed)
+        await ctx.send(embed = embed)
 
 def setup(bot):
     bot.add_cog(Filloas(bot))
