@@ -1,6 +1,7 @@
 import requests
 import json
 import re
+import os
 from itertools import cycle
 import discord
 from discord.ext import commands, tasks
@@ -57,10 +58,11 @@ class Events(commands.Cog):
                 if re.search("^https?://.*\..*$", reference["answer"]):
 
                     url = reference["answer"]
-                    fileName = "cache/" + url[url.rindex("/")+1:]
-                    r = requests.get(url)
-                    with open(fileName, 'wb') as f:
-                        f.write(r.content) 
+                    fileName =  "cache/" + reference["regex"] + "_"+ url[url.rindex("/")+1:]
+                    if not os.path.exists(fileName):   
+                        r = requests.get(url)
+                        with open(fileName, 'wb') as f:
+                            f.write(r.content) 
                     await message.channel.send(file=discord.File(fileName))
                 else:
                     await message.channel.send(reference["answer"])
