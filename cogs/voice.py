@@ -4,6 +4,7 @@ import shutil
 import random
 import asyncio
 from typing import Optional
+import json
 
 import discord
 from discord.ext import commands
@@ -148,17 +149,29 @@ class Voice(commands.Cog):
             )
             await ctx.send(embed=embed)
             return
+        cachePath="cache/ytQueue.json"
+        cache = {}
+        if os.path.exists(cachePath):
+            with open(cachePath, 'r') as f:
+                try:
+                    cache = json.load(f)
+                except json.decoder.JSONDecodeError as e:
+                    pass
         for ytId in queue["queue"]:
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                info_dict = ydl.extract_info(ytId, download=False)
-                video_id = info_dict.get("id", None)
-                video_url = "https://youtube.com/watch?v=" + video_id
-                video_title = info_dict.get('title', None)
-            dict = {
-                "name": video_title,
-                "url": video_url
-            }
-            videos.append(dict)
+            if not ytId in cache:
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    info_dict = ydl.extract_info(ytId, download=False)
+                    video_id = info_dict.get("id", None)
+                    video_url = "https://youtube.com/watch?v=" + video_id
+                    video_title = info_dict.get('title', None)
+                cache[video_id] = {
+                    "name": video_title,
+                    "url": video_url
+                    }
+
+            videos.append(cache[ytId])
+        with open(cachePath, 'w') as f:
+            json.dump(cache, f)
 
         embed = Embed(
             title = f"Cola de reproducción",
