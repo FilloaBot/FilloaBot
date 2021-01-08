@@ -70,7 +70,13 @@ class Voice(commands.Cog):
             voice = await channel.connect()
         
         await ctx.guild.change_voice_state(channel = channel, self_deaf = True)
-
+        def ytErrorEmbed():
+            embed = Embed(
+                    title = "**No se han encotrado resultados**",
+                    description = f"No hay resultados para **{url}**",
+                    colour = Color(0xFF0000),
+                    ) 
+            self.bot.loop.create_task(ctx.send(embed = embed))
         ydl_opts = {
             'default_search': 'auto'
         }
@@ -79,12 +85,7 @@ class Voice(commands.Cog):
             try:
                 info_dict = ydl.extract_info(url, download=False)
             except (youtube_dl.utils.DownloadError):
-                embed = Embed(
-                    title = "**No se han encotrado resultados**",
-                    description = f"No hay resultados para **{url}**",
-                    colour = Color(0xFF0000),
-                    ) 
-                await ctx.send(embed = embed)
+                ytErrorEmbed()
                 return
             try:
                 info_dict = info_dict["entries"][0]
@@ -92,14 +93,10 @@ class Voice(commands.Cog):
                 pass
             video_id = info_dict.get("id", None)
             video_url = "https://youtube.com/watch?v=" + video_id
+            music_url = info_dict["formats"][0]["url"]
             video_title = info_dict.get('title', None)
             if video_title == None:
-                embed = Embed(
-                    title = "**No se han encotrado resultados**",
-                    description = f"No hay resultados para **{url}**",
-                    colour = Color(0xFF0000),
-                    ) 
-                await ctx.send(embed = embed)
+                ytErrorEmbed()
                 return
         if not noQueue:
             database.insert_into_queue(ctx.guild.id, video_id)
@@ -108,20 +105,7 @@ class Voice(commands.Cog):
 
 
         if voice == None or not voice.is_playing():
-            filePath = "cache/" + str(ctx.guild.id) + ".mp3"
-            if os.path.exists(filePath):
-                os.remove(filePath)
-            ydl_opts = {
-                'outtmpl': filePath,
-                'format': 'bestaudio/best',
-                'postprocessors': [{
-                    'key': 'FFmpegExtractAudio',
-                    'preferredcodec': 'mp3',
-                    'preferredquality': '192',
-                }]
-            }
-            with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                ydl.download([url])            
+        
             database.modify_queue(ctx.guild.id, currentPos=database.get_queue(ctx.guild.id)["queue"].index(url))    
             embed = Embed(
                 title = "**Reproduciendo**",
@@ -129,7 +113,7 @@ class Voice(commands.Cog):
                 colour = Color(0x3A425D),
             )
             await ctx.send(embed = embed)
-            player = FFmpegPCMAudio(filePath)
+            player = FFmpegPCMAudio(music_url)
             if voice.is_playing():
                 voice.stop()
             def callback(error):
