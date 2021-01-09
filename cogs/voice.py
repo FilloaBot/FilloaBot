@@ -140,12 +140,9 @@ class Voice(commands.Cog):
             if voice.is_playing():
                 voice.stop()
             def callback(error):
-                print("a")
                 if error:
-                    print("b")
                     raise error
                 elif not skipCallback and not voice.is_playing():
-                    print("c")
                     nonlocal ctx
                     pending_command = self.bot.get_command("next")
                     self.bot.loop.create_task(ctx.invoke(pending_command, True))
