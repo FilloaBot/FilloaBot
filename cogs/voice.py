@@ -114,7 +114,13 @@ class Voice(commands.Cog):
                 colour = Color(0x3A425D),
             )
             await ctx.send(embed = embed)
-            player = FFmpegPCMAudio(music_url)
+
+            FFMPEG_OPTIONS = {
+            'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+            'options': '-vn',
+            }
+            player = FFmpegPCMAudio(music_url, **FFMPEG_OPTIONS)
+
             if voice.is_playing():
                 voice.stop()
             def callback(error):
@@ -196,7 +202,7 @@ class Voice(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command()
-    async def next(self, ctx, isAutomatedCall=False):
+    async def next(self, ctx, isAutomatedCall="False"):
         emoji = '⏭️'
         msg = ctx.message
         if not isAutomatedCall == True:
