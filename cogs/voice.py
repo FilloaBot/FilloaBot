@@ -47,12 +47,14 @@ class Voice(commands.Cog):
             await ctx.send("No estoy conectado a ningun canal fetido")
 
     @commands.command()
-    async def play(self, ctx, url: Optional[str], noQueue="False"):#No queue's default is a string for allowing various words in arguments
+    async def play(self, ctx, url: Optional[str], noQueue="False", skipCallback="False"):#No queue's default is a string for allowing various words in arguments
         if url == None:
             pending_command = self.bot.get_command("resume")
             await ctx.invoke(pending_command)
         if not noQueue == True:
             noQueue = False
+        if not skipCallback == True:
+            skipCallback = False
         if ctx.author.voice == None:
             await ctx.send("No estas en un canal de voz melon")
             return
@@ -138,10 +140,12 @@ class Voice(commands.Cog):
             if voice.is_playing():
                 voice.stop()
             def callback(error):
+                print("a")
                 if error:
+                    print("b")
                     raise error
-                elif not noQueue:
-                    
+                elif not skipCallback and not voice.is_playing():
+                    print("c")
                     nonlocal ctx
                     pending_command = self.bot.get_command("next")
                     self.bot.loop.create_task(ctx.invoke(pending_command, True))
@@ -242,7 +246,7 @@ class Voice(commands.Cog):
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
-        await ctx.invoke(pending_command, nextYtId, True)
+        await ctx.invoke(pending_command, nextYtId, True, isAutomatedCall)
 
     @commands.command()
     async def previous(self, ctx):
@@ -267,7 +271,7 @@ class Voice(commands.Cog):
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
-        await ctx.invoke(pending_command, nextYtId, True)
+        await ctx.invoke(pending_command, nextYtId, True, False)
 
     @commands.command()
     async def shuffle(self, ctx):
@@ -297,7 +301,7 @@ class Voice(commands.Cog):
         delPos = delPos -1
         if delPos == data["currentPos"]:
             pending_command = self.bot.get_command("next")
-            await ctx.invoke(pending_command, True)
+            await ctx.invoke(pending_command)
         if delPos < 0 or delPos >= len(queue):
             embed = Embed(
                 title = "**Ese número no esta en la cola**",
