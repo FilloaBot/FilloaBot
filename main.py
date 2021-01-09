@@ -22,7 +22,7 @@ intents.members = True
 intents.reactions = True
 intents.messages = True
 intents.emojis = True
-bot = commands.Bot(command_prefix = '?', description = "Bot para diversos propositos")
+bot = commands.Bot(command_prefix = '?', description = "El mejor bot del mundo manines")
 
 bot.cogs_list = [
     "cogs.filloas",
