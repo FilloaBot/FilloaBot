@@ -305,15 +305,11 @@ class Voice(commands.Cog):
             )
             await ctx.send(embed=embed)
             return
-        ydl_opts = {
-            'default_search': 'auto'
-        }
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ytId = queue[delPos]
-            info_dict = ydl.extract_info(ytId, download=False)
-            video_id = info_dict.get("id", None)
-            video_url = "https://youtube.com/watch?v=" + video_id
-            video_title = info_dict.get('title', None)
+        cachePath="cache/ytQueue.json"
+        with open(cachePath, 'r') as f:
+                cache = json.load(f)
+        video_title = cache[queue[delPos]]["name"]
+        video_url = cache[queue[delPos]]["url"]
         database.remove_from_queue(ctx.guild.id, delPos)
         embed = Embed(
                 title = "**Borrado de la cola**",
