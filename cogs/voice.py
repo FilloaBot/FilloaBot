@@ -99,6 +99,20 @@ class Voice(commands.Cog):
             if video_title == None:
                 ytErrorEmbed()
                 return
+        cachePath="cache/ytQueue.json"
+        cache = {}
+        if os.path.exists(cachePath):
+            with open(cachePath, 'r') as f:
+                try:
+                    cache = json.load(f)
+                except json.decoder.JSONDecodeError as e:
+                    pass
+        cache[video_id] = {
+                    "name": video_title,
+                    "url": video_url
+                    }
+        with open(cachePath, 'w') as f:
+            json.dump(cache, f)
         if not noQueue:
             database.insert_into_queue(ctx.guild.id, video_id)
 
@@ -124,7 +138,7 @@ class Voice(commands.Cog):
             if voice.is_playing():
                 voice.stop()
             def callback(error):
-                if error != None:
+                if error:
                     raise error
                 elif not noQueue:
                     
@@ -282,7 +296,8 @@ class Voice(commands.Cog):
         queue = data["queue"]
         delPos = delPos -1
         if delPos == data["currentPos"]:
-            database.modify_queue(ctx.guild.id, currentPos=0)
+            pending_command = self.bot.get_command("next")
+            await ctx.invoke(pending_command, True)
         if delPos < 0 or delPos >= len(queue):
             embed = Embed(
                 title = "**Ese número no esta en la cola**",
