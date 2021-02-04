@@ -191,6 +191,10 @@ class main_db():
                 loopPos = self.get_queue(guildId)["loopPos"]
                 if loopPos == None:
                     loopPos=0
+                else:
+                    loopPos+=1
+        else:
+            loopPos += 1
         if currentPos == None:
             if self.get_queue(guildId) == None:
                 currentPos = 0

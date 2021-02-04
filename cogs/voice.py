@@ -122,8 +122,8 @@ class Voice(commands.Cog):
 
 
         if voice == None or not voice.is_playing():
-        
-            database.modify_queue(ctx.guild.id, currentPos=database.get_queue(ctx.guild.id)["queue"].index(url))    
+            currentPos = database.get_queue(ctx.guild.id)["queue"].index(url)
+            database.modify_queue(ctx.guild.id, currentPos=currentPos)    
             embed = Embed(
                 title = "**Reproduciendo**",
                 description = f"[{video_title}]({video_url}) [{ctx.message.author.mention}]",
@@ -140,10 +140,10 @@ class Voice(commands.Cog):
             if voice.is_playing():
                 voice.stop()
             def callback(error):
+                queue = database.get_queue(ctx.guild.id)
                 if error:
                     raise error
-                elif not skipCallback and not voice.is_playing():
-                    nonlocal ctx
+                elif not skipCallback and not voice.is_playing() and queue["currentPos"] == currentPos:
                     pending_command = self.bot.get_command("next")
                     self.bot.loop.create_task(ctx.invoke(pending_command, True))
             voice.play(player, after=callback)
@@ -210,10 +210,16 @@ class Voice(commands.Cog):
             embed.add_field(name = f"**{str(i + 1)} {current}**", value = f"[{video_title}]({video_url})")
             
             i +=1
+        footerIcons = []
         if queue["shuffle"]:
-            embed.set_footer(text = "Reproducción mezclada activada")
-        else: 
-            embed.set_footer(text = "Reproducción mezclada desactivada")
+            footerIcons.append("🔀")
+        if queue["loop"]:
+            iconStr = "🔁"
+            if queue["loopPos"] != None:
+                iconStr += str(queue["loopPos"] + 1)
+            footerIcons.append(iconStr)
+        if footerIcons != []:
+            embed.set_footer(text = " ".join(footerIcons))
         await ctx.send(embed = embed)
 
     @commands.command()
@@ -236,14 +242,20 @@ class Voice(commands.Cog):
         else:
             pos += 1#database.increment_current_pos(ctx.guild.id)
         if pos >= len(queue):
-            pos=0
+            if data["loop"] or not isAutomatedCall:
+                pos=0
+            else:
+                return
         if pos < 0:
             pos= len(queue) - 1
+        if data["loopPos"] != None and isAutomatedCall:
+            pos = data["loopPos"]
+        database.modify_queue(ctx.guild.id, currentPos=pos)
         nextYtId = queue[pos]
         pending_command = self.bot.get_command("play")
         if not voice == None:
             voice.stop()
-        await ctx.invoke(pending_command, nextYtId, True, isAutomatedCall)
+        await ctx.invoke(pending_command, nextYtId, True)#, isAutomatedCall) #This eas an idea that just realised it's silly as fuck but the variable will stay in other side just in case
 
     @commands.command()
     async def previous(self, ctx):
@@ -284,6 +296,33 @@ class Voice(commands.Cog):
             shuffleStr = "Desactivada"
         embed = Embed(
                 title = f"Reproducción mezclada: **{shuffleStr}**",
+                colour = Color(0x3A425D),
+            )
+        await ctx.send(embed=embed)
+        
+    @commands.command()
+    async def loop(self, ctx, loopPos: Optional[int]):
+        if loopPos != None:
+            loopPos = loopPos - 1
+        emoji = '🔁'
+        msg = ctx.message
+        await msg.add_reaction(emoji)
+        data = database.get_queue(ctx.guild.id)
+        if loopPos == None:
+            loop = not data["loop"]
+            database.modify_queue(ctx.guild.id, loop=loop, loopPos=-1)
+        else:
+            if loopPos not in range(0, len(data["queue"])):
+                await ctx.send("Esa posición no existe melon.")
+                return
+            loop = True
+            database.modify_queue(ctx.guild.id, loop=loop, loopPos=loopPos)
+        if loop:
+            loopStr = "Activado"
+        else:
+            loopStr = "Desactivado"
+        embed = Embed(
+                title = f"Loop: **{loopStr}**",
                 colour = Color(0x3A425D),
             )
         await ctx.send(embed=embed)
