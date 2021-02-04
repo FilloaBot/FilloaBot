@@ -26,6 +26,7 @@ bot = commands.Bot(command_prefix = '?', description = "El mejor bot del mundo m
 
 bot.cogs_list = [
     "cogs.filloas",
+    "cogs.ubports",
     "cogs.jokes",
     "cogs.admin_tools",
     "cogs.events",
