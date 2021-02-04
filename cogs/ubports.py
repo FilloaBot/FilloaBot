@@ -30,8 +30,8 @@ class Ubports(commands.Cog):
         devicesCardText = str(soupData.find_all('p')[0])
         devicesInt = int(re.search('\d+', devicesCardText).group())
         embed = Embed(
-                title = "¡Crea tu propio port!",
-                description = f"Seguro, tres mil millones de dispositivos ejecutan Java. ¿Pero sabías que **{devicesInt}** dispositivos ejecutan [Ubuntu Touch](https://ubuntu-touch.io/)? Por cierto, si tu dispositivo no está entre estos, ¡podrías estar interesado en aprender [cómo hacer el porteo número {devicesInt+1} de Ubuntu Touch!](http://docs.halium.org/en/latest/porting/first-steps.html)",
+                title = "¡Crea tu propio port de Ubuntu Touch!",
+                description = f"Seguro, tres mil millones de dispositivos ejecutan Java. ¿Pero sabías que **{devicesInt}** dispositivos ejecutan [Ubuntu Touch](https://ubuntu-touch.io/)? Por cierto, si tu dispositivo no está entre estos, ¡Puede que estes interesado en aprender [cómo hacer el porteo número {devicesInt+1} de Ubuntu Touch!](http://docs.halium.org/en/latest/porting/first-steps.html)",
                 colour = Color(0xCE4501)
         )
         await ctx.send(embed=embed)
