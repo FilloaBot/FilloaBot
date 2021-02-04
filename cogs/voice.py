@@ -87,6 +87,8 @@ class Voice(commands.Cog):
             url = int(url) - 1
             url = database.get_queue(ctx.guild.id)["queue"][url]
             noQueue=True
+            if not voice == None:
+                voice.stop()
         except (ValueError, IndexError) as e:
             pass
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
@@ -281,6 +283,7 @@ class Voice(commands.Cog):
             pos=0
         if pos < 0:
             pos= len(queue) - 1
+        database.modify_queue(ctx.guild.id, currentPos=pos)
         nextYtId = queue[pos]
         pending_command = self.bot.get_command("play")
         if not voice == None:
