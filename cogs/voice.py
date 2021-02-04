@@ -83,7 +83,12 @@ class Voice(commands.Cog):
         ydl_opts = {
             'default_search': 'auto'
         }
-
+        try:
+            url = int(url) - 1
+            url = database.get_queue(ctx.guild.id)["queue"][url]
+            noQueue=True
+        except (ValueError, IndexError) as e:
+            pass
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             try:
                 info_dict = ydl.extract_info(url, download=False)
