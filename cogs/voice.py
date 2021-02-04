@@ -126,6 +126,10 @@ class Voice(commands.Cog):
             database.insert_into_queue(ctx.guild.id, video_id)
 
         url = video_id
+        if url in database.get_queue(ctx.guild.id)["queue"]:
+            if not voice == None:
+                voice.stop()
+            noQueue = True
 
 
         if voice == None or not voice.is_playing():
