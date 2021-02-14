@@ -52,8 +52,8 @@ class main_db():
         cursorObj = con.cursor()
 
         if not self.user_exist(user_name):
-            s = (user_name, balance,)
-            cursorObj.execute("INSERT INTO balance VALUES(?, ?)", s)
+            s = (user_name, balance, 0, )
+            cursorObj.execute("INSERT INTO balance VALUES(?, ?, ?)", s)
 
         else:
             s = (balance, user_name,)
