@@ -40,5 +40,11 @@ class Admin_tools(commands.Cog):
         embed.set_thumbnail(url = target.avatar_url)
         await ctx.send(embed = embed)
 
+    @commands.command(name = "help")
+    async def help(self, ctx):
+        # we are developing the filloabot website so there you will be able to see all the commands
+        pass
+
+
 def setup(bot):
     bot.add_cog(Admin_tools(bot))
