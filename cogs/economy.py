@@ -18,7 +18,7 @@ class Economy(commands.Cog):
     @commands.command()
     @cooldown(1, 30, BucketType.user)
     async def farm(self, ctx):
-        print(f"{ctx.author} ha intentado farmear dinero")
+        #print(f"{ctx.author} ha intentado farmear dinero")
         user = str(ctx.author)
         money = random.randint(200, 600)
         database.add_user_balance(user, money)
@@ -121,11 +121,19 @@ class Economy(commands.Cog):
             return                                  
                                                         
         userStr = str(ctx.author)           
-        current_user_balance = database.get_user_balance(userStr)                                                           
+        current_user_balance = database.get_user_balance(userStr)                                        
          
         if int(current_user_balance) == 0:                     
             await ctx.send("No tienes pasta manin")
-            return                                        
+            return
+
+        if int(current_user_balance) < int(cantidad):
+            await ctx.send("No puedes depositar mas del dinero que tienes fiera")
+            return
+
+        if int(cantidad) < 0:
+            await ctx.send("Que intentas manin")
+            return                                         
                                                               
         if str(cantidad.lower()) == 'all': 
             database.deposit(userStr, current_user_balance)
@@ -145,7 +153,15 @@ class Economy(commands.Cog):
             return                                  
                                                         
         userStr = str(ctx.author)           
-        current_bank_balance = database.get_user_bank(userStr)                                                           
+        current_bank_balance = database.get_user_bank(userStr)
+
+        if int(current_bank_balance) < int(cantidad):
+            await ctx.send("No pudes sacar mas del dinero que tienes fiera")
+            return
+
+        if int(cantidad) < 0:
+            await ctx.send("Que intentas manin")
+            return
          
         if int(current_bank_balance) == 0:                     
             await ctx.send("No tienes pasta manin")
@@ -154,7 +170,6 @@ class Economy(commands.Cog):
         if str(cantidad.lower()) == 'all': 
             database.withdraw(userStr, current_bank_balance)
             await ctx.send(f"Sacaste `{current_bank_balance}` de tu cuenta")
-
         else:                   
             database.withdraw(userStr, int(cantidad))
             await ctx.send(f"Sacaste `{cantidad}` de tu cuenta") 
