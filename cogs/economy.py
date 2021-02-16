@@ -10,6 +10,7 @@ from discord.ext.commands import cooldown, BucketType, BadArgument
 from cogs.utils.database import *
 
 database = main_db("./database.db")
+emoji = "<:filoacoin:811229504692420608>"
 
 class Economy(commands.Cog):
     def __init__(self, bot):
@@ -23,7 +24,7 @@ class Economy(commands.Cog):
         money = random.randint(200, 600)
         database.add_user_balance(user, money)
 
-        await ctx.send(f"Has farmeado esta cantidad de dinero `{money}`")
+        await ctx.send(f"Has farmeado esta cantidad de dinero `{money}` {emoji}")
 
     @commands.command()
     async def balance(self, ctx, user: Optional[Member]):
@@ -42,8 +43,8 @@ class Economy(commands.Cog):
         money = str(database.get_user_balance(userStr))
         bank = str(database.get_user_bank(userStr))
 
-        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}**")
-        embed.add_field(name = "_**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}**")
+        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}** {emoji}")
+        embed.add_field(name = "_**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}** {emoji}")
 
         await ctx.send(embed = embed)
 
@@ -64,7 +65,7 @@ class Economy(commands.Cog):
         current_balance = database.get_user_balance(userStr)
         target_balance = database.get_user_balance(targetStr)
         if current_balance < 500 or current_balance == None:
-           await ctx.send("No puedes robar dinero hasta que tengas mas de 500 monedas manin")
+           await ctx.send(f"No puedes robar dinero hasta que tengas mas de 500 {emoji} manin")
            return
         if target_balance == 0 or target_balance == None:
             await ctx.send(f"{target.mention} ya está seco")
@@ -74,13 +75,13 @@ class Economy(commands.Cog):
         if probabilidad <= 4:
             money_to_substract = random.randint(1, target_balance)
             database.exchange_balance(targetStr, userStr, money_to_substract)
-            await ctx.send(f"Has robado con exito `{money_to_substract}` de {target.mention}!")
+            await ctx.send(f"Has robado con exito `{money_to_substract}` {emoji} de {target.mention}!")
         elif probabilidad == 5:
             money_to_substract = random.randint(1, 500)
             database.exchange_balance(userStr, targetStr, money_to_substract)
-            await ctx.send(f"Te han pillado al robar :(\nPagas una multa de `{money_to_substract}` a {target.mention}")
+            await ctx.send(f"Te han pillado al robar :(\nPagas una multa de `{money_to_substract}` {emoji} a {target.mention}")
         else:
-            await ctx.send(f"Te han pillado al robar :(\nPero {target.mention} te perdonan y no pagas multa.")
+            await ctx.send(f"Te han pillado al robar :(\nPero {target.mention} te perdona y no pagas multa.")
 
         return
 
@@ -107,7 +108,7 @@ class Economy(commands.Cog):
             cantidad = database.get_user_balance(userStr)
 
         database.exchange_balance(userStr, targetStr, cantidad)
-        await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` de monedas. Joder, ni que fueras bolsonaro")
+        await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` {emoji} de monedas. Joder, ni que fueras bolsonaro")
 
         return 0
 
@@ -141,7 +142,7 @@ class Economy(commands.Cog):
 
         else:                   
             database.deposit(userStr, int(cantidad))
-            await ctx.send(f"Depositaste `{cantidad}` en tu cuenta")
+            await ctx.send(f"Depositaste `{cantidad}` {emoji} en tu cuenta")
 
     @commands.command()
     async def withdraw(self, ctx, cantidad = None):
@@ -172,7 +173,7 @@ class Economy(commands.Cog):
             await ctx.send(f"Sacaste `{current_bank_balance}` de tu cuenta")
         else:                   
             database.withdraw(userStr, int(cantidad))
-            await ctx.send(f"Sacaste `{cantidad}` de tu cuenta") 
+            await ctx.send(f"Sacaste `{cantidad}` {emoji} de tu cuenta") 
 
 def setup(bot):
     bot.add_cog(Economy(bot))
