@@ -154,3 +154,7 @@ cache/
 
 #For avoding the downloaded songs
 *.mp3
+
+#For avoiding vscode's shit. VSCodium in this case; open-source man here.
+.vscode/
+
