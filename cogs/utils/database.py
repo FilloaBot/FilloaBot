@@ -26,7 +26,7 @@ class main_db():
             # print("El usuario no existe melon")
             return None
 
-        return out[0][0]
+        return int(out[0][0])
 
     def get_user_bank(self, user_name):
         con = sqlite3.connect(self.database)
@@ -39,7 +39,7 @@ class main_db():
         if not out:
             return None
         
-        return out[0][0]
+        return int(out[0][0])
 
     def add_user_balance(self, user_name, balance = 0):
         current_balance = self.get_user_balance(user_name)
