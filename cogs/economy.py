@@ -87,7 +87,7 @@ class Economy(commands.Cog):
 
     @commands.command()
     @cooldown(1, 10, BucketType.user)
-    async def give(self, ctx, target: Member, cantidad):
+    async def give(self, ctx, target: Member, cantidad: str):
         if target == None:
             await ctx.send("Tienes que poner a quien vas a darle la pasta crack")
             return
@@ -107,7 +107,7 @@ class Economy(commands.Cog):
         if cantidad == "all" or cantidad == "ALL":
             cantidad = database.get_user_balance(userStr)
 
-        database.exchange_balance(userStr, targetStr, cantidad)
+        database.exchange_balance(userStr, targetStr, int(cantidad))
         await ctx.send(f"Le has dado al usuario {target.mention} `{cantidad}` {emoji} de monedas. Joder, ni que fueras bolsonaro")
 
         return 0
@@ -146,13 +146,10 @@ class Economy(commands.Cog):
             await ctx.send(f"Depositaste `{cantidad}` {emoji} en tu cuenta")
 
     @commands.command()
-    async def withdraw(self, ctx, cantidad):
+    async def withdraw(self, ctx, cantidad: str):
         if cantidad == None:
             await ctx.send("Introduce una canditad")
-            return
-        if type(cantidad) == int and cantidad == 0:
-            await ctx.send("Pon un valor correcto")
-            return                                  
+            return                                
                                                         
         userStr = str(ctx.author)           
         current_bank_balance = int(database.get_user_bank(userStr))
@@ -160,11 +157,8 @@ class Economy(commands.Cog):
         if int(current_bank_balance) < int(cantidad):
             await ctx.send("No pudes sacar mas del dinero que tienes fiera")
             return
-        
-        else:
-            pass
 
-        if int(cantidad) < 0:
+        if int(cantidad) <= 0:
             await ctx.send("Que intentas manin")
             return
          
@@ -173,12 +167,12 @@ class Economy(commands.Cog):
             return                                        
 
         if str(cantidad.lower()) == 'all': 
-            cantidad = database.get_user_bank(userStr)
-            database.withdraw(userStr, cantidad)
-            await ctx.send(f"Sacaste `{current_bank_balance}` de tu cuenta")
-        else:                   
-            database.withdraw(userStr, int(cantidad))
-            await ctx.send(f"Sacaste `{cantidad}` {emoji} de tu cuenta") 
+            #database.withdraw(userStr, int(current_bank_balance))
+            #await ctx.send(f"Sacaste `{current_bank_balance}` de tu cuenta")
+            cantidad = current_bank_balance
+
+        database.withdraw(userStr, int(cantidad))
+        await ctx.send(f"Sacaste `{cantidad}` {emoji} de tu cuenta") 
 
 def setup(bot):
     bot.add_cog(Economy(bot))
