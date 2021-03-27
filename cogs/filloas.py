@@ -33,7 +33,8 @@ class Filloas(commands.Cog):
                 client_secret = secret_token,
                 user_name = "",
                 password = "",
-                user_agent = "FILLOA_BOT" 
+                user_agent = "FILLOA_BOT", 
+                check_for_async=False
             )
 
     @commands.command(
