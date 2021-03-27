@@ -116,10 +116,7 @@ class Economy(commands.Cog):
     async def deposit(self, ctx, cantidad):
         if cantidad == None:
             await ctx.send("Introduce una canditad")
-            return
-        if type(cantidad) == int and cantidad == 0:
-            await ctx.send("Pon un valor correcto")
-            return                                  
+            return                              
                                                         
         userStr = str(ctx.author)
         current_user_balance = database.get_user_balance(userStr)                                                
@@ -128,22 +125,20 @@ class Economy(commands.Cog):
             await ctx.send("No tienes pasta manin")
             return
 
-        if int(current_user_balance) < int(cantidad):
-            await ctx.send("No puedes depositar mas del dinero que tienes fiera")
-            return
+        if type(cantidad) == int:
+            if int(current_user_balance) < int(cantidad):
+                await ctx.send("No puedes depositar mas del dinero que tienes fiera")
+                return
 
-        if int(cantidad) < 0:
-            await ctx.send("Que intentas manin")
-            return                                         
+            if int(cantidad) <= 0:
+                await ctx.send("Que intentas manin")
+                return                                         
                                                               
         if str(cantidad.lower()) == 'all': 
             cantidad = database.get_user_balance(userStr)
-            database.deposit(userStr, cantidad)
-            await ctx.send(f"Depositaste `{current_user_balance}` en tu cuenta")
-
-        else:                   
-            database.deposit(userStr, int(cantidad))
-            await ctx.send(f"Depositaste `{cantidad}` {emoji} en tu cuenta")
+                 
+        database.deposit(userStr, int(cantidad))
+        await ctx.send(f"Depositaste `{cantidad}` {emoji} en tu cuenta")
 
     @commands.command()
     async def withdraw(self, ctx, cantidad: str):
@@ -154,21 +149,21 @@ class Economy(commands.Cog):
         userStr = str(ctx.author)           
         current_bank_balance = int(database.get_user_bank(userStr))
         
-        if int(current_bank_balance) < int(cantidad):
-            await ctx.send("No pudes sacar mas del dinero que tienes fiera")
-            return
+        if type(cantidad) == int:
 
-        if int(cantidad) <= 0:
-            await ctx.send("Que intentas manin")
-            return
-         
-        if int(current_bank_balance) == 0:                     
-            await ctx.send("No tienes pasta manin")
-            return                                        
+            if int(current_bank_balance) < int(cantidad):
+                await ctx.send("No pudes sacar mas del dinero que tienes fiera")
+                return
+
+            if int(cantidad) <= 0:
+                await ctx.send("Que intentas manin")
+                return
+            
+            if int(current_bank_balance) == 0:                     
+                await ctx.send("No tienes pasta manin")
+                return                                        
 
         if str(cantidad.lower()) == 'all': 
-            #database.withdraw(userStr, int(current_bank_balance))
-            #await ctx.send(f"Sacaste `{current_bank_balance}` de tu cuenta")
             cantidad = current_bank_balance
 
         database.withdraw(userStr, int(cantidad))
