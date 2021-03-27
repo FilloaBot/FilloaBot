@@ -43,8 +43,11 @@ class Economy(commands.Cog):
         money = str(database.get_user_balance(userStr))
         bank = str(database.get_user_bank(userStr))
 
-        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual en la cartera de {user.mention} es: **{money}** {emoji}")
-        embed.add_field(name = "_**Banco**_", value = f"El dinero actual en el banco de {user.mention} es : **{bank}** {emoji}")
+        
+        embed.add_field(name = "_**Cartera**_", value = f"El dinero actual de la cartera: **{money}** {emoji}")
+        embed.add_field(name = "_**Banco**_", value = f"El dinero actual del banco: **{bank}** {emoji}")
+        embed.add_field(name = "_**Total**_", value = f"Dinero total: **{int(bank) + int(money)}** {emoji}", inline = False)
+        embed.add_field(name = "_  _", value = f"{user.mention}", inline = False)
 
         await ctx.send(embed = embed)
 
