@@ -39,10 +39,11 @@ class Voice(commands.Cog):
     async def leave(self, ctx):
         channel = ctx.message.author.voice.channel
         voice = get(self.bot.voice_clients, guild = ctx.guild)
-
+        global stopPlayback
+        stopPlayback = True
         if not voice == None:
             await voice.disconnect()
-            await ctx.send(f"Desconectado del canal {channel}")
+            await ctx.send(f"Desconectado del canal `{channel}`")
         else:
             await ctx.send("No estoy conectado a ningun canal fetido")
 
@@ -154,10 +155,12 @@ class Voice(commands.Cog):
                 queue = database.get_queue(ctx.guild.id)
                 if error:
                     raise error
-                elif not skipCallback and not voice.is_playing() and queue["currentPos"] == currentPos:
+                elif not stopPlayback and not skipCallback and not voice.is_playing() and queue["currentPos"] == currentPos:
                     pending_command = self.bot.get_command("next")
                     self.bot.loop.create_task(ctx.invoke(pending_command, True))
             voice.play(player, after=callback)
+            global stopPlayback
+            stopPlayback = False
         else:
             embed = Embed(
                 title = "**Añadido a la cola**",
@@ -421,6 +424,9 @@ class Voice(commands.Cog):
         await msg.add_reaction(emoji)
 
         voice = get(self.bot.voice_clients, guild = ctx.guild)
+
+        global stopPlayback
+        stopPlayback = True
 
         if not voice == None:
             voice.stop()
