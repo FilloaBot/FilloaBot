@@ -85,6 +85,9 @@ class Filloas(commands.Cog):
     async def meme(self, ctx, subreddit="memes"):
         async with ctx.typing():
             subreddit = self.reddit.subreddit(subreddit)
+            if subreddit.over18 and not ctx.message.channel.is_nsfw():
+                await ctx.send("Este canal no es NSFW")
+                return
             all_submisions = []
 
             top = subreddit.top(limit = 50)
