@@ -87,6 +87,7 @@ class Filloas(commands.Cog):
             subreddit = self.reddit.subreddit(subreddit)
             if subreddit.over18 and not ctx.message.channel.is_nsfw():
                 await ctx.send("Este canal no es NSFW")
+                await ctx.send("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fclipground.com%2Fimages%2Ftrollface-png.jpg&f=1&nofb=1")
                 return
             all_submisions = []
 
