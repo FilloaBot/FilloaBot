@@ -95,8 +95,10 @@ class Filloas(commands.Cog):
 
             for submission in top:
                 all_submisions.append(submission)
-
+            supportedExtensions = [".jpg", ".png"]
             random_sub = random.choice(all_submisions)
+            while not random_sub.url[-4:] in supportedExtensions:
+                random_sub = random.choice(all_submisions)
 
         title = random_sub.title
         url = random_sub.url
