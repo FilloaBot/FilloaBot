@@ -123,15 +123,15 @@ class Voice(commands.Cog):
                     }
         with open(cachePath, 'w') as f:
             json.dump(cache, f)
-        if not noQueue:
-            database.insert_into_queue(ctx.guild.id, video_id)
 
         url = video_id
         if url in database.get_queue(ctx.guild.id)["queue"]:
             if not voice == None:
                 voice.stop()
             noQueue = True
-
+        
+        if not noQueue:
+            database.insert_into_queue(ctx.guild.id, video_id)
 
         if voice == None or not voice.is_playing():
             currentPos = database.get_queue(ctx.guild.id)["queue"].index(url)
