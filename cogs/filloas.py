@@ -82,15 +82,16 @@ class Filloas(commands.Cog):
         brief = "Show memes from reddit"
     )
     async def meme(self, ctx, subreddit="memes"):
-        subreddit = self.reddit.subreddit(subreddit)
-        all_submisions = []
+        async with ctx.typing():
+            subreddit = self.reddit.subreddit(subreddit)
+            all_submisions = []
 
-        top = subreddit.top(limit = 50)
+            top = subreddit.top(limit = 50)
 
-        for submission in top:
-            all_submisions.append(submission)
+            for submission in top:
+                all_submisions.append(submission)
 
-        random_sub = random.choice(all_submisions)
+            random_sub = random.choice(all_submisions)
 
         title = random_sub.title
         url = random_sub.url
