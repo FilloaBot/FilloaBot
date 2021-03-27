@@ -77,12 +77,6 @@ class Filloas(commands.Cog):
     async def ping(self, ctx):
         latency = self.bot.latency
         await ctx.send(f"La latencia del bot es: {latency * 1000} ms")
-        
-    @commands.command()
-    async def invite(self, ctx):
-        if self.inviteLink == None:
-            self.inviteLink = discord.utils.oauth_url(client_id=self.bot.user.id, permissions=discord.Permissions(37080128))
-        await ctx.send(f"Puedes invitar el bot aqui <{self.inviteLink}>")
 
     @commands.command(
         brief = "Show memes from reddit"

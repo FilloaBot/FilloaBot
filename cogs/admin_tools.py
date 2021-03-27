@@ -45,6 +45,10 @@ class Admin_tools(commands.Cog):
         # we are developing the filloabot website so there you will be able to see all the commands
         pass
 
+    @commands.command(pass_context = True)
+    async def invite(self, ctx):
+        """ Invite me to your server """
+        await ctx.send(f"**{ctx.author.name}**, use this URL to invite me\n<{discord.utils.oauth_url(self.bot.user.id)}>")
 
 def setup(bot):
     bot.add_cog(Admin_tools(bot))
