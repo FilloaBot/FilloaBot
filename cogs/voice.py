@@ -14,7 +14,7 @@ from discord import FFmpegPCMAudio, Embed, Color
 from cogs.utils.database import *
 
 try:
-    databasePath = os.environ["FILLOABOT_DB_LOCATION"]
+    databasePath = os.environ["FILLOABOT_DB_PATH"]
 except KeyError:
     databasePath = "./database.db"
 database = main_db(databasePath)
