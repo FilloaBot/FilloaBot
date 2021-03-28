@@ -9,7 +9,13 @@ from discord.ext.commands import cooldown, BucketType, BadArgument
 
 from cogs.utils.database import *
 
-database = main_db("./database.db")
+import os
+
+try:
+    databasePath = os.environ["FILLOABOT_DB_LOCATION"]
+except KeyError:
+    databasePath = "./database.db"
+database = main_db(databasePath)
 emoji = "<:filoacoin:811229504692420608>"
 
 class Economy(commands.Cog):

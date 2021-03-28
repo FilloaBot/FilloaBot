@@ -7,11 +7,19 @@ import sys
 
 import discord
 from discord.ext import commands
+import os
 
 #Set up the token
-with open("token.json") as file:
-    data = json.load(file)
-token = data['bot_token']
+try:
+    token = os.environ["FILLOABOT_DISCORD_TOKEN"]
+except KeyError:
+    with open("token.json") as file:
+        data = json.load(file)
+    token = data['bot_token']
+
+#Create chache dir if it doesnt exist
+if not os.path.isdir("./cache"):
+    os.mkdir("./cache")
 
 #Setting up the loggin
 logger = logging.getLogger("discord")

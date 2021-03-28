@@ -11,11 +11,17 @@ from discord import Embed, Member
 
 from cogs.config.variables import urls
 
-with open("cogs/config/reddit.json") as file:
-    data = json.load(file)
-    
-token = data["reddit_token"]
-secret_token = data["reddit_secret_token"]
+import os
+
+try:   
+    token = os.environ["FILLOABOT_REDDIT_TOKEN"] or data["reddit_token"]
+    secret_token = os.environ["FILLOABOT_REDDIT_SECRET"] or data["reddit_secret_token"]
+except KeyError:
+    with open("cogs/config/reddit.json") as file:
+        data = json.load(file)   
+    token = data["reddit_token"]
+    secret_token = data["reddit_secret_token"]
+
 
 class Filloas(commands.Cog):
     def __init__(self, bot):

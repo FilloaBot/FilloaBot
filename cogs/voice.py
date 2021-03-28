@@ -13,7 +13,11 @@ from discord import FFmpegPCMAudio, Embed, Color
 
 from cogs.utils.database import *
 
-database = main_db("./database.db")
+try:
+    databasePath = os.environ["FILLOABOT_DB_LOCATION"]
+except KeyError:
+    databasePath = "./database.db"
+database = main_db(databasePath)
 
 class Voice(commands.Cog):
     def __init__(self, bot):
@@ -125,7 +129,7 @@ class Voice(commands.Cog):
             json.dump(cache, f)
 
         url = video_id
-        if url in database.get_queue(ctx.guild.id)["queue"]:
+        if not database.get_queue(ctx.guild.id) == None and url in database.get_queue(ctx.guild.id)["queue"]:
             if not voice == None:
                 voice.stop()
             noQueue = True

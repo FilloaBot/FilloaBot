@@ -1,8 +1,20 @@
 import sqlite3
 from sqlite3 import Error
+import os
+import requests
 
 class main_db():
     def __init__(self, database):
+        if not os.path.isfile(database):
+            url = 'https://personal.peprolinbot.com/filloabot/database.db.template'
+ 
+            r = requests.get(url)
+ 
+            filename = database
+ 
+            with open(filename,'wb') as output_file:
+                output_file.write(r.content)
+ 
         self.database = database
 
     def user_exist(self, user_name):
@@ -204,7 +216,6 @@ class main_db():
 
         loop = int(loop)
         shuffle = int(shuffle)
-
         con = sqlite3.connect(self.database)
         cursorObj = con.cursor()
 
