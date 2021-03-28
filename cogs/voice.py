@@ -435,5 +435,10 @@ class Voice(commands.Cog):
         if not voice == None:
             voice.stop()
 
+    @commands.command()       
+    async def asmr(self, ctx):
+        pending_command = self.bot.get_command("play")
+        await ctx.invoke(pending_command, "dQw4w9WgXcQ")
+
 def setup(bot):
     bot.add_cog(Voice(bot))
