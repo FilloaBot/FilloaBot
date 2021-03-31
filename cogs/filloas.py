@@ -7,7 +7,7 @@ import praw
 import discord
 # from discord import Bot
 from discord.ext import commands
-from discord import Embed, Member
+from discord import Embed, Member, Color
 
 from cogs.config.variables import urls
 
@@ -92,8 +92,12 @@ class Filloas(commands.Cog):
         async with ctx.typing():
             subreddit = self.reddit.subreddit(subreddit)
             if subreddit.over18 and not ctx.message.channel.is_nsfw():
-                await ctx.send("Este canal no es NSFW")
-                await ctx.send("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fclipground.com%2Fimages%2Ftrollface-png.jpg&f=1&nofb=1")
+                embed = Embed(
+                    title = "Este canal no es NSFW",
+                    colour = Color(0xFF0000),
+                )
+                embed.set_image(url = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fclipground.com%2Fimages%2Ftrollface-png.jpg")
+                await ctx.send(embed = embed)
                 return
             all_submisions = []
 
@@ -106,21 +110,21 @@ class Filloas(commands.Cog):
             while not random_sub.url[-4:] in supportedExtensions:
                 random_sub = random.choice(all_submisions)
 
-        title = random_sub.title
-        url = random_sub.url
-        name = random_sub.name
-        author = random_sub.author
-        link = "https://www.reddit.com" + random_sub.permalink
-        author_link = "https://www.reddit.com/user/" + author.name
+            title = random_sub.title
+            url = random_sub.url
+            name = random_sub.name
+            author = random_sub.author
+            link = "https://www.reddit.com" + random_sub.permalink
+            author_link = "https://www.reddit.com/user/" + author.name
 
-        embed = Embed(
-            title = title
-        )
-        embed.set_image(url = url)
-        embed.set_footer(text = "Reddit",icon_url = "https://images-eu.ssl-images-amazon.com/images/I/418PuxYS63L.png")
-        embed.set_author(name=f"Posted by u/{author}", url=link)
+            embed = Embed(
+                title = title
+            )
+            embed.set_image(url = url)
+            embed.set_footer(text = "Reddit",icon_url = "https://images-eu.ssl-images-amazon.com/images/I/418PuxYS63L.png")
+            embed.set_author(name=f"Posted by u/{author}", url=link)
 
-        await ctx.send(embed = embed)
+            await ctx.send(embed = embed)
 
 def setup(bot):
     bot.add_cog(Filloas(bot))
