@@ -8,6 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Notify Success
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          severity: info
+          details: Initializing docker image building and publishing. Will inform when i have the results
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Checkout code
         uses: actions/checkout@v2
         
@@ -25,3 +31,27 @@ jobs:
           docker buildx build --push \
             --tag ghcr.io/filloabot/filloabot:latest \
             --platform linux/amd64,linux/arm64,linux/arm/v7 .
+      - name: Notify Success
+        uses: rjstone/discord-webhook-notify@v1
+        if: success()
+        with:
+          severity: info
+          details: Docker image building and publishing succeeded! Check new image at [ghcr.io/filloabot/filloabot](https://github.com/orgs/FilloaBot/packages/container/package/filloabot)
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Notify Failure
+        uses: rjstone/discord-webhook-notify@v1
+        if: failure()
+        with:
+          severity: error
+          details: Docker image building and publishing failed!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+      - name: Notify Cancellation
+        uses: rjstone/discord-webhook-notify@v1
+        if: cancelled()
+        with:
+          severity: warn
+          details: Docker image building and publishing cancelled!
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          
+      
+          
