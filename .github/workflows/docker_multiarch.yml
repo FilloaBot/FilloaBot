@@ -14,6 +14,7 @@ jobs:
           severity: info
           details: "**INITIALIZING** Docker image building and publishing. I will inform when I have the results."
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          color: '#7289da'
       - name: Checkout code
         uses: actions/checkout@v2
         
