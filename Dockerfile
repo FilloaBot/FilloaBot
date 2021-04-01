@@ -4,7 +4,7 @@ ENV TZ=Europe/Madrid
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update -y && \
-    apt-get install -y python3-pip python3-dev ffmpeg
+    apt-get install -y python3-pip python3-dev libxml2-dev libxslt-dev libffi-dev ffmpeg
     
 COPY ./requirements.txt /requirements.txt
 
