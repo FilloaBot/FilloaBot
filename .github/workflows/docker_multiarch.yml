@@ -12,7 +12,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
-          details: **INITIALIZING** Docker image building and publishing. I will inform when I have the results.
+          details: "**INITIALIZING** Docker image building and publishing. I will inform when I have the results."
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,21 +36,21 @@ jobs:
         if: success()
         with:
           severity: info
-          details: Docker image building and publishing **SUCCEEDED**! Check the new image at [ghcr.io/filloabot/filloabot](https://github.com/orgs/FilloaBot/packages/container/package/filloabot)
+          details: "Docker image building and publishing **SUCCEEDED**! Check the new image at [ghcr.io/filloabot/filloabot](https://github.com/orgs/FilloaBot/packages/container/package/filloabot)"
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify Failure
         uses: rjstone/discord-webhook-notify@v1
         if: failure()
         with:
           severity: error
-          details: Docker image building and publishing **FAILED**!
+          details: "Docker image building and publishing **FAILED**!"
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify Cancellation
         uses: rjstone/discord-webhook-notify@v1
         if: cancelled()
         with:
           severity: warn
-          details: Docker image building and publishing **CANCELLED**!
+          details: "Docker image building and publishing **CANCELLED**!"
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           
       
