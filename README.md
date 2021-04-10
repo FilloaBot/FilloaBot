@@ -1,10 +1,8 @@
 # FilloaBot
-Este es un bot de proposito general.
+Bot de proposito general escrito en python3 usando la libreria discord.py
 
-## Instalacion
-Lo primero es descargar la version de python 3.9, puedes hacerlo [aquí](http://www.python.org/downloads/ "aquí")
-
-Despues necesitamos instalar las dependencias, para hacerlo
-ejecutamos el comando en la terminal `pip install -r requirements.txt`
-
-Ya tendriamos los componentes necesarios para usar el bot. Nota: necesitareis un token para usar el bot y lo tendreis que meter en un archivo que llameis token.json 
+## Features
+-Economia: simple sistema de economia (ganar dinero, meterlo en el banco, sacarlo, darlo o robarlo)
+-Musica: sistema de reproduccion de musica con colas
+-Memes: diferentes comandos para memes, incluyendo uno para ver memes de reddit
+-Referencias: el bot tiene unas sorpresas para diferentes palabras escritas en los chats
