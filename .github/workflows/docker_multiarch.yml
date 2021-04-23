@@ -6,9 +6,10 @@ on:
 
 jobs:
   build:
+    name: Build and push Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
-      - name: Notify Success
+      - name: Notify Initialization
         uses: rjstone/discord-webhook-notify@v1
         with:
           severity: info
@@ -17,21 +18,15 @@ jobs:
           color: '#7289da'
       - name: Checkout code
         uses: actions/checkout@v2
-        
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-        
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-        
-      - name: Login to Github packages
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-        
-      - name: Build and publish the image
-        run: |
-          docker buildx build --push \
-            --tag ghcr.io/filloabot/filloabot:latest \
-            --platform linux/amd64,linux/arm64,linux/arm/v7 .
+      - name: Push to GitHub Packages
+        uses: docker/build-push-action@v1
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: docker.pkg.github.com
+          repository: filloabot/filloabot
+          tag_with_ref: true
+
       - name: Notify Success
         uses: rjstone/discord-webhook-notify@v1
         if: success()
