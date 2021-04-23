@@ -16,16 +16,22 @@ jobs:
           details: "**INITIALIZING** Docker image building and publishing. I will inform when I have the results."
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           color: '#7289da'
+
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: docker.pkg.github.com
-          repository: filloabot/filloabot
+          repository: filloabot/filloabot/filloabot
           tag_with_ref: true
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
 
       - name: Notify Success
         uses: rjstone/discord-webhook-notify@v1
