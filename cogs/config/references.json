@@ -20,6 +20,4 @@
 {"regex": "teixeiro", "answer": "https://cdn.imgpaste.net/2020/12/31/U6U2b.jpg", "reactions": []},
 {"regex":"gracias filloa bot|gracias filloabot", "answer":"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fi.pinimg.com%2F736x%2F3f%2F64%2Fdc%2F3f64dc57cc8806d237ce64ef02f7a466.jpg", "reactions":["😎"]},
 {"regex": "ella no te quiere", "answer": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthumbs.gfycat.com%2FInbornRingedAsianelephant-size_restricted.gif", "reactions": ["😭"]},
-{"regex": "carmen|cuevas|samus|zero", "answer": "https://media.eventhubs.com/images/2015/11/14_smashhighresartwork171.jpg", "reactions": ["🥵", "🍑", "❤️", "😍"]},
-{"regex": "fisicas|físicas|tifa|lockchart|colliders|coliders|unreal", "answer": "https://ffvii-remake.square-enix-games.com/images/downloads/tifa/tifa_wallpaper_1080x1920.jpg", "reactions": ["🥵", "🍑", "❤️", "😍"]}
 ]} 
