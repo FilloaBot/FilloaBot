@@ -1,5 +1,5 @@
 aiohttp==3.7.4.post0
-astroid==2.5.3
+astroid==2.11.2
 async-timeout==3.0.1
 attrs==20.3.0
 beautifulsoup4==4.9.3
